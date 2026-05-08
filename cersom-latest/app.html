@@ -1,0 +1,550 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sermon Scribe - Sermon Generator</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <style>
+    :root {
+      --gold: #c9912a;
+      --gold-dark: #a67823;
+      --cream: #fdfaf4;
+      --dark: #1a1208;
+      --gray: #7a6e5f;
+      --border: rgba(201, 145, 42, 0.2);
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'DM Sans', sans-serif;
+      background: var(--cream);
+      color: var(--dark);
+      line-height: 1.6;
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 20px;
+    }
+
+    header {
+      background: white;
+      border-bottom: 1px solid var(--border);
+      padding: 16px 0;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    .header-content {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .logo {
+      font-family: 'Playfair Display', serif;
+      font-size: 24px;
+      font-weight: 700;
+      color: var(--dark);
+    }
+
+    .logo span {
+      color: var(--gold);
+    }
+
+    nav {
+      display: flex;
+      gap: 24px;
+      align-items: center;
+    }
+
+    nav a {
+      color: var(--gray);
+      text-decoration: none;
+      font-weight: 500;
+      transition: color 0.2s;
+    }
+
+    nav a:hover, nav a.active {
+      color: var(--gold);
+    }
+
+    .main-layout {
+      display: grid;
+      grid-template-columns: 350px 1fr;
+      gap: 30px;
+      padding: 30px 0;
+      min-height: calc(100vh - 100px);
+    }
+
+    .sidebar {
+      background: white;
+      border-radius: 12px;
+      padding: 24px;
+      height: fit-content;
+      position: sticky;
+      top: 100px;
+      border: 1px solid var(--border);
+    }
+
+    .sidebar h2 {
+      font-family: 'Playfair Display', serif;
+      font-size: 20px;
+      margin-bottom: 20px;
+      color: var(--dark);
+    }
+
+    .form-group {
+      margin-bottom: 20px;
+    }
+
+    .form-group label {
+      display: block;
+      margin-bottom: 8px;
+      font-weight: 500;
+      color: var(--dark);
+      font-size: 14px;
+    }
+
+    .form-group input,
+    .form-group textarea,
+    .form-group select {
+      width: 100%;
+      padding: 12px;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      font-family: inherit;
+      font-size: 14px;
+      transition: border-color 0.2s;
+    }
+
+    .form-group input:focus,
+    .form-group textarea:focus,
+    .form-group select:focus {
+      outline: none;
+      border-color: var(--gold);
+    }
+
+    .form-group textarea {
+      resize: vertical;
+      min-height: 80px;
+    }
+
+    .btn {
+      width: 100%;
+      padding: 14px;
+      background: var(--gold);
+      color: white;
+      border: none;
+      border-radius: 8px;
+      font-weight: 600;
+      font-size: 15px;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+
+    .btn:hover {
+      background: var(--gold-dark);
+    }
+
+    .btn:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+    }
+
+    .main-content {
+      background: white;
+      border-radius: 12px;
+      padding: 40px;
+      border: 1px solid var(--border);
+      min-height: 600px;
+    }
+
+    .empty-state {
+      text-align: center;
+      padding: 100px 40px;
+      color: var(--gray);
+    }
+
+    .empty-state svg {
+      width: 80px;
+      height: 80px;
+      margin-bottom: 20px;
+      opacity: 0.3;
+    }
+
+    .empty-state h3 {
+      font-family: 'Playfair Display', serif;
+      font-size: 24px;
+      margin-bottom: 12px;
+      color: var(--dark);
+    }
+
+    .empty-state p {
+      font-size: 15px;
+    }
+
+    .sermon-output {
+      display: none;
+    }
+
+    .sermon-output.active {
+      display: block;
+    }
+
+    .sermon-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 30px;
+      padding-bottom: 20px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .sermon-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 32px;
+      font-weight: 700;
+      color: var(--dark);
+      margin-bottom: 8px;
+    }
+
+    .sermon-meta {
+      color: var(--gray);
+      font-size: 14px;
+    }
+
+    .sermon-actions {
+      display: flex;
+      gap: 12px;
+    }
+
+    .btn-sm {
+      padding: 8px 16px;
+      background: white;
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      font-size: 14px;
+      cursor: pointer;
+      transition: all 0.2s;
+      color: var(--dark);
+      font-weight: 500;
+    }
+
+    .btn-sm:hover {
+      border-color: var(--gold);
+      color: var(--gold);
+    }
+
+    .sermon-content {
+      font-size: 16px;
+      line-height: 1.8;
+      color: var(--dark);
+    }
+
+    .sermon-content h2 {
+      font-family: 'Playfair Display', serif;
+      font-size: 24px;
+      margin: 30px 0 16px;
+      color: var(--dark);
+    }
+
+    .sermon-content h3 {
+      font-size: 18px;
+      margin: 24px 0 12px;
+      color: var(--dark);
+    }
+
+    .sermon-content p {
+      margin-bottom: 16px;
+    }
+
+    .sermon-content ul, .sermon-content ol {
+      margin: 16px 0;
+      padding-left: 24px;
+    }
+
+    .sermon-content li {
+      margin-bottom: 8px;
+    }
+
+    .loading {
+      display: none;
+      text-align: center;
+      padding: 80px 40px;
+    }
+
+    .loading.active {
+      display: block;
+    }
+
+    .loading-spinner {
+      width: 50px;
+      height: 50px;
+      border: 4px solid rgba(201, 145, 42, 0.2);
+      border-top-color: var(--gold);
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+      margin: 0 auto 20px;
+    }
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+
+    .loading p {
+      color: var(--gray);
+      font-size: 15px;
+    }
+
+    @media (max-width: 900px) {
+      .main-layout {
+        grid-template-columns: 1fr;
+      }
+
+      .sidebar {
+        position: static;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <div class="container">
+      <div class="header-content">
+        <div class="logo">Sermon<span>Scribe</span></div>
+        <nav>
+          <a href="#" class="active">Generator</a>
+          <a href="#" id="history-link">History</a>
+          <a href="#" id="schedule-link">Schedule</a>
+        </nav>
+      </div>
+    </div>
+  </header>
+
+  <div class="container">
+    <div class="main-layout">
+      
+      <aside class="sidebar">
+        <h2>New Sermon</h2>
+        <form id="sermon-form">
+          <div class="form-group">
+            <label for="topic">Topic or Theme</label>
+            <input type="text" id="topic" placeholder="e.g., Faith in Difficult Times" required>
+          </div>
+
+          <div class="form-group">
+            <label for="scripture">Scripture Reference</label>
+            <input type="text" id="scripture" placeholder="e.g., James 1:2-4">
+          </div>
+
+          <div class="form-group">
+            <label for="tone">Tone</label>
+            <select id="tone">
+              <option value="encouraging">Encouraging</option>
+              <option value="challenging">Challenging</option>
+              <option value="teaching">Teaching</option>
+              <option value="evangelistic">Evangelistic</option>
+              <option value="pastoral">Pastoral</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label for="length">Sermon Length</label>
+            <select id="length">
+              <option value="10">10 minutes</option>
+              <option value="15">15 minutes</option>
+              <option value="20" selected>20 minutes</option>
+              <option value="30">30 minutes</option>
+              <option value="40">40 minutes</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label for="notes">Additional Notes</label>
+            <textarea id="notes" placeholder="Any specific points or illustrations you want to include..."></textarea>
+          </div>
+
+          <button type="submit" class="btn" id="generate-btn">Generate Sermon</button>
+        </form>
+      </aside>
+
+      <main class="main-content">
+        
+        <div class="empty-state" id="empty-state">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path>
+            <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path>
+          </svg>
+          <h3>Ready to craft your sermon</h3>
+          <p>Fill out the form and click "Generate Sermon" to begin</p>
+        </div>
+
+        <div class="loading" id="loading-state">
+          <div class="loading-spinner"></div>
+          <p>Crafting your sermon...</p>
+        </div>
+
+        <div class="sermon-output" id="sermon-output">
+          <div class="sermon-header">
+            <div>
+              <h1 class="sermon-title" id="sermon-title"></h1>
+              <div class="sermon-meta" id="sermon-meta"></div>
+            </div>
+            <div class="sermon-actions">
+              <button class="btn-sm" id="copy-btn">Copy</button>
+              <button class="btn-sm" id="save-btn">Save</button>
+              <button class="btn-sm" id="regenerate-btn">Regenerate</button>
+            </div>
+          </div>
+          <div class="sermon-content" id="sermon-content"></div>
+        </div>
+
+      </main>
+
+    </div>
+  </div>
+
+  <script>
+    const SUPABASE_URL = 'https://japlrtlpopefvgkecpif.supabase.co';
+    const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImphcGxydGxwb3BlZnZna2VjcGlmIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzE3Njc1NTcsImV4cCI6MjA4NzM0MzU1N30.q0JVwQJdJcpNUcyt2opxE-yRlhBnWdO3oq4IUMk6L5M';
+
+    let sessionId = localStorage.getItem('sermon_session_id');
+    if (!sessionId) {
+      sessionId = 'session_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
+      localStorage.setItem('sermon_session_id', sessionId);
+    }
+
+    const form = document.getElementById('sermon-form');
+    const generateBtn = document.getElementById('generate-btn');
+    const emptyState = document.getElementById('empty-state');
+    const loadingState = document.getElementById('loading-state');
+    const sermonOutput = document.getElementById('sermon-output');
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      await generateSermon();
+    });
+
+    async function generateSermon() {
+      const formData = {
+        topic: document.getElementById('topic').value,
+        scripture: document.getElementById('scripture').value,
+        tone: document.getElementById('tone').value,
+        length: document.getElementById('length').value,
+        notes: document.getElementById('notes').value
+      };
+
+      emptyState.style.display = 'none';
+      sermonOutput.classList.remove('active');
+      loadingState.classList.add('active');
+      generateBtn.disabled = true;
+
+      try {
+        // Call secure edge function
+        const response = await fetch('/api/generate-sermon', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(formData)
+        });
+
+        const rawBody = await response.text();
+        let data;
+        try {
+          data = JSON.parse(rawBody);
+        } catch {
+          throw new Error(
+            `Server returned non-JSON response (HTTP ${response.status}). ` +
+            `First 200 chars: ${rawBody.slice(0, 200)}`
+          );
+        }
+
+        if (!response.ok) {
+          const parts = [data.error || 'Failed to generate sermon'];
+          if (data.details) parts.push(data.details);
+          if (data.status) parts.push(`upstream status ${data.status}`);
+          throw new Error(parts.join(' — '));
+        }
+
+        const sermonText = data.text || (data.content && data.content[0] && data.content[0].text);
+        if (!sermonText) {
+          throw new Error('Server returned no sermon text. Body: ' + rawBody.slice(0, 200));
+        }
+
+        await saveSermon({
+          ...formData,
+          full_text: sermonText,
+          session_id: sessionId
+        });
+
+        displaySermon(formData.topic, formData.scripture, sermonText);
+
+      } catch (error) {
+        console.error('Error:', error);
+        alert('Failed to generate sermon: ' + error.message);
+        emptyState.style.display = 'block';
+      } finally {
+        loadingState.classList.remove('active');
+        generateBtn.disabled = false;
+      }
+    }
+
+    async function saveSermon(sermonData) {
+      try {
+        const res = await fetch(SUPABASE_URL + '/rest/v1/sermons', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'apikey': SUPABASE_KEY,
+            'Authorization': 'Bearer ' + SUPABASE_KEY,
+            'Prefer': 'return=representation'
+          },
+          body: JSON.stringify(sermonData)
+        });
+
+        if (!res.ok) {
+          console.error('Failed to save sermon');
+        }
+
+        return await res.json();
+      } catch (error) {
+        console.error('Save error:', error);
+      }
+    }
+
+    function displaySermon(title, scripture, content) {
+      document.getElementById('sermon-title').textContent = title;
+      document.getElementById('sermon-meta').textContent = scripture || 'No scripture reference';
+      document.getElementById('sermon-content').innerHTML = content.replace(/\n/g, '<br>');
+      sermonOutput.classList.add('active');
+    }
+
+    document.getElementById('copy-btn').addEventListener('click', () => {
+      const content = document.getElementById('sermon-content').innerText;
+      navigator.clipboard.writeText(content);
+      alert('Sermon copied to clipboard!');
+    });
+
+    document.getElementById('save-btn').addEventListener('click', () => {
+      alert('Sermon already saved automatically!');
+    });
+
+    document.getElementById('regenerate-btn').addEventListener('click', () => {
+      generateSermon();
+    });
+  </script>
+
+</body>
+</html>
