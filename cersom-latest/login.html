@@ -30,7 +30,6 @@
       grid-template-columns: 1fr 1fr;
     }
 
-    /* LEFT PANEL */
     .left-panel {
       background: var(--dark);
       display: flex;
@@ -43,264 +42,96 @@
 
     .left-panel::before {
       content: '';
-      position: absolute;
-      inset: 0;
+      position: absolute; inset: 0;
       background: radial-gradient(ellipse 80% 60% at 30% 40%, rgba(201,145,42,0.15) 0%, transparent 70%);
       pointer-events: none;
     }
 
     .left-panel::after {
       content: '"';
-      position: absolute;
-      top: 40px;
-      left: 50px;
+      position: absolute; top: 40px; left: 50px;
       font-family: 'Playfair Display', serif;
-      font-size: 220px;
-      color: rgba(201,145,42,0.08);
-      line-height: 1;
-      pointer-events: none;
+      font-size: 220px; color: rgba(201,145,42,0.08);
+      line-height: 1; pointer-events: none;
     }
 
-    .brand {
-      margin-bottom: 60px;
-      position: relative;
-      z-index: 1;
-    }
-
-    .brand-logo {
-      font-family: 'Playfair Display', serif;
-      font-size: 28px;
-      font-weight: 700;
-      color: white;
-    }
-
+    .brand { margin-bottom: 60px; position: relative; z-index: 1; }
+    .brand-logo { font-family: 'Playfair Display', serif; font-size: 28px; font-weight: 700; color: white; }
     .brand-logo span { color: var(--gold); }
+    .brand-tagline { margin-top: 8px; font-size: 13px; color: rgba(255,255,255,0.4); letter-spacing: 0.08em; text-transform: uppercase; }
 
-    .brand-tagline {
-      margin-top: 8px;
-      font-size: 13px;
-      color: rgba(255,255,255,0.4);
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-    }
-
-    .quote {
-      position: relative;
-      z-index: 1;
-    }
-
-    .quote-text {
-      font-family: 'Playfair Display', serif;
-      font-size: 1.6rem;
-      font-style: italic;
-      color: rgba(255,255,255,0.9);
-      line-height: 1.5;
-      margin-bottom: 24px;
-    }
-
+    .quote { position: relative; z-index: 1; }
+    .quote-text { font-family: 'Playfair Display', serif; font-size: 1.6rem; font-style: italic; color: rgba(255,255,255,0.9); line-height: 1.5; margin-bottom: 24px; }
     .quote-text em { color: var(--gold-light); font-style: normal; }
+    .quote-source { font-size: 13px; color: rgba(255,255,255,0.35); letter-spacing: 0.05em; }
 
-    .quote-source {
-      font-size: 13px;
-      color: rgba(255,255,255,0.35);
-      letter-spacing: 0.05em;
-    }
+    .features { margin-top: 60px; display: flex; flex-direction: column; gap: 16px; position: relative; z-index: 1; }
+    .feature { display: flex; align-items: center; gap: 12px; font-size: 14px; color: rgba(255,255,255,0.6); }
+    .feature-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--gold); flex-shrink: 0; }
 
-    .features {
-      margin-top: 60px;
-      display: flex;
-      flex-direction: column;
-      gap: 16px;
-      position: relative;
-      z-index: 1;
-    }
+    .right-panel { display: flex; align-items: center; justify-content: center; padding: 60px 80px; }
 
-    .feature {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      font-size: 14px;
-      color: rgba(255,255,255,0.6);
-    }
+    .auth-box { width: 100%; max-width: 400px; }
 
-    .feature-dot {
-      width: 6px;
-      height: 6px;
-      border-radius: 50%;
-      background: var(--gold);
-      flex-shrink: 0;
-    }
-
-    /* RIGHT PANEL */
-    .right-panel {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      padding: 60px 80px;
-    }
-
-    .auth-box {
-      width: 100%;
-      max-width: 400px;
-    }
-
-    .auth-tabs {
-      display: flex;
-      margin-bottom: 32px;
-      border-bottom: 1px solid var(--border);
-    }
+    .auth-tabs { display: flex; margin-bottom: 32px; border-bottom: 1px solid var(--border); }
 
     .auth-tab {
-      flex: 1;
-      padding: 12px;
-      text-align: center;
-      font-size: 15px;
-      font-weight: 500;
-      color: var(--gray);
-      cursor: pointer;
-      border-bottom: 2px solid transparent;
-      margin-bottom: -1px;
-      transition: all 0.2s;
-      background: none;
-      border-top: none;
-      border-left: none;
-      border-right: none;
+      flex: 1; padding: 12px; text-align: center;
+      font-size: 15px; font-weight: 500; color: var(--gray);
+      cursor: pointer; border-bottom: 2px solid transparent;
+      margin-bottom: -1px; transition: all 0.2s;
+      background: none; border-top: none; border-left: none; border-right: none;
       font-family: inherit;
     }
+    .auth-tab.active { color: var(--gold); border-bottom-color: var(--gold); }
 
-    .auth-tab.active {
-      color: var(--gold);
-      border-bottom-color: var(--gold);
-    }
+    .auth-heading { font-family: 'Playfair Display', serif; font-size: 28px; font-weight: 700; margin-bottom: 8px; color: var(--dark); }
+    .auth-sub { font-size: 14px; color: var(--gray); margin-bottom: 32px; }
 
-    .auth-heading {
-      font-family: 'Playfair Display', serif;
-      font-size: 28px;
-      font-weight: 700;
-      margin-bottom: 8px;
-      color: var(--dark);
-    }
-
-    .auth-sub {
-      font-size: 14px;
-      color: var(--gray);
-      margin-bottom: 32px;
-    }
-
-    .form-group {
-      margin-bottom: 20px;
-    }
-
-    .form-group label {
-      display: block;
-      font-size: 13px;
-      font-weight: 500;
-      color: var(--dark);
-      margin-bottom: 8px;
-      letter-spacing: 0.02em;
-    }
+    .form-group { margin-bottom: 20px; }
+    .form-group label { display: block; font-size: 13px; font-weight: 500; color: var(--dark); margin-bottom: 8px; }
 
     .form-group input {
-      width: 100%;
-      padding: 13px 16px;
-      border: 1.5px solid var(--border);
-      border-radius: 8px;
-      font-family: inherit;
-      font-size: 15px;
-      color: var(--dark);
-      background: white;
+      width: 100%; padding: 13px 16px;
+      border: 1.5px solid var(--border); border-radius: 8px;
+      font-family: inherit; font-size: 15px; color: var(--dark);
+      background: white; outline: none;
       transition: border-color 0.2s, box-shadow 0.2s;
-      outline: none;
     }
-
-    .form-group input:focus {
-      border-color: var(--gold);
-      box-shadow: 0 0 0 3px rgba(201,145,42,0.1);
-    }
+    .form-group input:focus { border-color: var(--gold); box-shadow: 0 0 0 3px rgba(201,145,42,0.1); }
 
     .btn-submit {
-      width: 100%;
-      padding: 14px;
-      background: var(--gold);
-      color: white;
-      border: none;
-      border-radius: 8px;
-      font-family: inherit;
-      font-size: 15px;
-      font-weight: 600;
-      cursor: pointer;
-      transition: background 0.2s, transform 0.1s;
+      width: 100%; padding: 14px;
+      background: var(--gold); color: white;
+      border: none; border-radius: 8px;
+      font-family: inherit; font-size: 15px; font-weight: 600;
+      cursor: pointer; transition: background 0.2s;
       margin-top: 8px;
     }
-
     .btn-submit:hover { background: var(--gold-dark); }
-    .btn-submit:active { transform: scale(0.99); }
     .btn-submit:disabled { opacity: 0.6; cursor: not-allowed; }
 
     .error-msg {
       display: none;
-      background: #fff5f5;
-      border: 1px solid #fed7d7;
-      color: var(--error);
-      padding: 12px 16px;
-      border-radius: 8px;
-      font-size: 13px;
-      margin-bottom: 16px;
+      background: #fff5f5; border: 1px solid #fed7d7;
+      color: var(--error); padding: 12px 16px;
+      border-radius: 8px; font-size: 13px; margin-bottom: 16px;
     }
-
     .error-msg.show { display: block; }
 
     .success-msg {
       display: none;
-      background: #f0fff4;
-      border: 1px solid #c6f6d5;
-      color: #276749;
-      padding: 12px 16px;
-      border-radius: 8px;
-      font-size: 13px;
-      margin-bottom: 16px;
-      text-align: center;
+      background: #f0fff4; border: 1px solid #c6f6d5;
+      color: #276749; padding: 12px 16px;
+      border-radius: 8px; font-size: 13px; margin-bottom: 16px; text-align: center;
     }
-
     .success-msg.show { display: block; }
 
-    .divider {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      margin: 24px 0;
-      font-size: 12px;
-      color: var(--gray);
-    }
-
-    .divider::before, .divider::after {
-      content: '';
-      flex: 1;
-      height: 1px;
-      background: var(--border);
-    }
-
-    .forgot {
-      text-align: right;
-      margin-top: -12px;
-      margin-bottom: 20px;
-    }
-
-    .forgot a {
-      font-size: 13px;
-      color: var(--gold);
-      text-decoration: none;
-    }
-
+    .forgot { text-align: right; margin-top: -12px; margin-bottom: 20px; }
+    .forgot a { font-size: 13px; color: var(--gold); text-decoration: none; }
     .forgot a:hover { text-decoration: underline; }
 
-    .terms {
-      margin-top: 20px;
-      font-size: 12px;
-      color: var(--gray);
-      text-align: center;
-      line-height: 1.6;
-    }
+    .terms { margin-top: 20px; font-size: 12px; color: var(--gray); text-align: center; line-height: 1.6; }
 
     @media (max-width: 768px) {
       body { grid-template-columns: 1fr; }
@@ -311,18 +142,15 @@
 </head>
 <body>
 
-  <!-- LEFT -->
   <div class="left-panel">
     <div class="brand">
       <div class="brand-logo">Sermon<span>Scribe</span></div>
       <div class="brand-tagline">AI-Powered Sermon Preparation</div>
     </div>
-
     <div class="quote">
       <p class="quote-text">"Spend less time <em>outlining.</em><br>More time in the Word."</p>
       <p class="quote-source">— The vision behind Sermon Scribe</p>
     </div>
-
     <div class="features">
       <div class="feature"><div class="feature-dot"></div>Generate full sermons in minutes</div>
       <div class="feature"><div class="feature-dot"></div>Scripture-first, theology-aware</div>
@@ -331,7 +159,6 @@
     </div>
   </div>
 
-  <!-- RIGHT -->
   <div class="right-panel">
     <div class="auth-box">
 
@@ -340,7 +167,7 @@
         <button class="auth-tab" id="tab-signup" onclick="switchTab('signup')">Create Account</button>
       </div>
 
-      <!-- LOGIN FORM -->
+      <!-- LOGIN -->
       <div id="login-form">
         <h1 class="auth-heading">Welcome back</h1>
         <p class="auth-sub">Sign in to your Sermon Scribe account</p>
@@ -349,21 +176,20 @@
         <div class="success-msg" id="login-success"></div>
 
         <div class="form-group">
-          <label for="login-email">Email address</label>
+          <label>Email address</label>
           <input type="email" id="login-email" placeholder="pastor@church.com" autocomplete="email">
         </div>
-
         <div class="form-group">
-          <label for="login-password">Password</label>
+          <label>Password</label>
           <input type="password" id="login-password" placeholder="••••••••" autocomplete="current-password">
         </div>
 
-        <div class="forgot"><a href="#" onclick="handleForgot()">Forgot password?</a></div>
+        <div class="forgot"><a href="#" onclick="handleForgot(); return false;">Forgot password?</a></div>
 
         <button class="btn-submit" id="login-btn" onclick="handleLogin()">Sign In</button>
       </div>
 
-      <!-- SIGNUP FORM -->
+      <!-- SIGNUP -->
       <div id="signup-form" style="display:none">
         <h1 class="auth-heading">Get started free</h1>
         <p class="auth-sub">Create your account — no credit card required</p>
@@ -372,17 +198,15 @@
         <div class="success-msg" id="signup-success"></div>
 
         <div class="form-group">
-          <label for="signup-name">Full name</label>
+          <label>Full name</label>
           <input type="text" id="signup-name" placeholder="Pastor John Smith" autocomplete="name">
         </div>
-
         <div class="form-group">
-          <label for="signup-email">Email address</label>
+          <label>Email address</label>
           <input type="email" id="signup-email" placeholder="pastor@church.com" autocomplete="email">
         </div>
-
         <div class="form-group">
-          <label for="signup-password">Password</label>
+          <label>Password</label>
           <input type="password" id="signup-password" placeholder="Min. 8 characters" autocomplete="new-password">
         </div>
 
@@ -400,9 +224,9 @@
     const { createClient } = supabase;
     const sb = createClient(SUPABASE_URL, SUPABASE_KEY);
 
-    // If already logged in, redirect to app
+    // Already logged in → go to dashboard
     sb.auth.getSession().then(({ data }) => {
-      if (data.session) window.location.href = "/dashboard.html";
+      if (data.session) window.location.href = '/dashboard.html';
     });
 
     function switchTab(tab) {
@@ -441,7 +265,7 @@
       } else {
         successEl.textContent = '✓ Signed in! Redirecting...';
         successEl.classList.add('show');
-        setTimeout(() => window.location.href = "/dashboard.html";
+        setTimeout(function() { window.location.href = '/dashboard.html'; }, 800);
       }
     }
 
@@ -471,9 +295,9 @@
       btn.disabled = true;
       btn.textContent = 'Creating account...';
 
-      const { error } = await sb.auth.signUp({
-        email,
-        password,
+      const { data, error } = await sb.auth.signUp({
+        email: email,
+        password: password,
         options: { data: { full_name: name } }
       });
 
@@ -482,12 +306,18 @@
         errEl.classList.add('show');
         btn.disabled = false;
         btn.textContent = 'Create Account';
+      } else if (data && data.session) {
+        // Email confirmation off — logged in immediately
+        successEl.textContent = '✓ Account created! Taking you to your dashboard...';
+        successEl.classList.add('show');
+        setTimeout(function() { window.location.href = '/dashboard.html'; }, 1000);
       } else {
+        // Email confirmation on — ask them to check email
         successEl.textContent = '✓ Account created! Check your email to confirm, then sign in.';
         successEl.classList.add('show');
         btn.disabled = false;
         btn.textContent = 'Create Account';
-        setTimeout(() => switchTab('login'), 3000);
+        setTimeout(function() { switchTab('login'); }, 3000);
       }
     }
 
@@ -508,11 +338,13 @@
       successEl.classList.add('show');
     }
 
-    // Allow Enter key to submit
-    document.addEventListener('keydown', (e) => {
-      if (e.key === 'Enter') {
-        if (document.getElementById('login-form').style.display !== 'none') handleLogin();
-        else handleSignup();
+    // Enter key support
+    document.addEventListener('keydown', function(e) {
+      if (e.key !== 'Enter') return;
+      if (document.getElementById('signup-form').style.display !== 'none') {
+        handleSignup();
+      } else {
+        handleLogin();
       }
     });
   </script>
