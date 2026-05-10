@@ -474,7 +474,7 @@
           'Authorization': 'Bearer ' + session.access_token,
           'Prefer': 'return=minimal'
         },
-        body: JSON.stringify({ user_id: currentUser.id, topic, scripture, tone, length, notes, full_text: sermonText })
+        body: JSON.stringify({ user_id: currentUser.id, topic, scripture_reference: scripture, tone, length, notes, full_text: sermonText })
       });
 
       document.getElementById('sermon-title').textContent = topic;
@@ -524,7 +524,7 @@
       <div class="sermon-card" onclick="openSermon('${s.id}')">
         <div class="sermon-card-title">${s.topic || s.theme || 'Untitled'}</div>
         <div class="sermon-card-meta">
-          ${(s.scripture||s.passage) ? `<span>${s.scripture||s.passage}</span>` : ''}
+          ${(s.scripture_reference||s.scripture||s.passage) ? `<span>${s.scripture_reference||s.scripture||s.passage}</span>` : ''}
           ${s.tone ? `<span class="sermon-card-badge">${s.tone}</span>` : ''}
           ${s.length ? `<span>${s.length} min</span>` : ''}
           <span>${new Date(s.created_at).toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'})}</span>
@@ -539,7 +539,7 @@
     if (!q) { renderHistory(allSermons); return; }
     renderHistory(allSermons.filter(s =>
       (s.topic||s.theme||'').toLowerCase().includes(q) ||
-      (s.scripture||s.passage||'').toLowerCase().includes(q) ||
+      (s.scripture_reference||s.scripture||s.passage||'').toLowerCase().includes(q) ||
       (s.notes||'').toLowerCase().includes(q) ||
       (s.full_text||'').toLowerCase().includes(q)
     ));
@@ -550,7 +550,7 @@
     if (!s) return;
     currentModalSermonId = id;
     document.getElementById('modal-title').textContent = s.topic || s.theme || 'Untitled';
-    document.getElementById('modal-meta').textContent = (s.scripture||s.passage||'No scripture') + ' · ' + (s.tone||'') + ' · ' + new Date(s.created_at).toLocaleDateString('en-US',{month:'long',day:'numeric',year:'numeric'});
+    document.getElementById('modal-meta').textContent = (s.scripture_reference||s.scripture||s.passage||'No scripture') + ' · ' + (s.tone||'') + ' · ' + new Date(s.created_at).toLocaleDateString('en-US',{month:'long',day:'numeric',year:'numeric'});
     const text = s.full_text || 'No content saved.';
     document.getElementById('modal-content').innerHTML = text.toString().replace(/\n/g,'<br>');
     document.getElementById('sermon-modal').classList.add('active');
