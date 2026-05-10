@@ -11,14 +11,12 @@
       --gold: #c9912a;
       --gold-dark: #a67823;
       --cream: #fdfaf4;
-      --parchment: #f5f0e8;
       --dark: #1a1208;
       --gray: #7a6e5f;
       --border: rgba(201, 145, 42, 0.2);
     }
 
     * { margin: 0; padding: 0; box-sizing: border-box; }
-
     body { font-family: 'DM Sans', sans-serif; background: var(--cream); color: var(--dark); line-height: 1.6; }
 
     #auth-gate { display: flex; align-items: center; justify-content: center; min-height: 100vh; font-size: 15px; color: var(--gray); }
@@ -26,41 +24,32 @@
 
     .container { max-width: 1200px; margin: 0 auto; padding: 0 20px; }
 
-    header {
-      background: white;
-      border-bottom: 1px solid var(--border);
-      padding: 14px 0;
-      position: sticky;
-      top: 0;
-      z-index: 100;
-    }
-
+    header { background: white; border-bottom: 1px solid var(--border); padding: 14px 0; position: sticky; top: 0; z-index: 100; }
     .header-content { display: flex; justify-content: space-between; align-items: center; }
 
-    .logo {
-      font-family: 'Playfair Display', serif;
-      font-size: 22px;
-      font-weight: 700;
-      color: var(--dark);
-      text-decoration: none;
-      cursor: pointer;
-    }
+    .logo { font-family: 'Playfair Display', serif; font-size: 22px; font-weight: 700; color: var(--dark); text-decoration: none; }
     .logo span { color: var(--gold); }
 
     .header-right { display: flex; align-items: center; gap: 12px; }
     .user-email { font-size: 13px; color: var(--gray); }
 
+    .btn-home {
+      padding: 7px 14px;
+      background: transparent;
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      font-size: 13px; font-family: inherit;
+      color: var(--gray); cursor: pointer;
+      text-decoration: none; transition: all 0.2s;
+    }
+    .btn-home:hover { border-color: var(--gold); color: var(--gold); }
+
     .btn-upgrade {
       padding: 7px 16px;
-      background: var(--gold);
-      color: white;
-      border: none;
-      border-radius: 6px;
-      font-size: 13px;
-      font-family: inherit;
-      font-weight: 600;
-      cursor: pointer;
-      text-decoration: none;
+      background: var(--gold); color: white;
+      border: none; border-radius: 6px;
+      font-size: 13px; font-family: inherit; font-weight: 600;
+      cursor: pointer; text-decoration: none;
       transition: background 0.2s;
     }
     .btn-upgrade:hover { background: var(--gold-dark); }
@@ -70,34 +59,20 @@
       background: transparent;
       border: 1px solid var(--border);
       border-radius: 6px;
-      font-size: 13px;
-      font-family: inherit;
-      color: var(--gray);
-      cursor: pointer;
+      font-size: 13px; font-family: inherit;
+      color: var(--gray); cursor: pointer;
       transition: all 0.2s;
     }
     .btn-signout:hover { border-color: var(--gold); color: var(--gold); }
 
-    .nav-tabs {
-      display: flex;
-      border-bottom: 1px solid var(--border);
-      background: white;
-      padding: 0 20px;
-    }
+    .nav-tabs { display: flex; border-bottom: 1px solid var(--border); background: white; padding: 0 20px; }
 
     .nav-tab {
-      padding: 13px 22px;
-      font-size: 14px;
-      font-weight: 500;
-      color: var(--gray);
-      cursor: pointer;
-      border-bottom: 2px solid transparent;
-      margin-bottom: -1px;
-      transition: all 0.2s;
-      background: none;
-      border-top: none;
-      border-left: none;
-      border-right: none;
+      padding: 13px 22px; font-size: 14px; font-weight: 500;
+      color: var(--gray); cursor: pointer;
+      border-bottom: 2px solid transparent; margin-bottom: -1px;
+      transition: all 0.2s; background: none;
+      border-top: none; border-left: none; border-right: none;
       font-family: inherit;
     }
     .nav-tab.active { color: var(--gold); border-bottom-color: var(--gold); }
@@ -106,7 +81,7 @@
     .page { display: none; padding: 30px 0; min-height: calc(100vh - 130px); }
     .page.active { display: block; }
 
-    /* UPGRADE BANNER */
+    /* UPGRADE BANNER - hidden for pro users */
     .upgrade-banner {
       background: linear-gradient(135deg, var(--dark) 0%, #2d1f0a 100%);
       border-radius: 12px;
@@ -117,28 +92,15 @@
       gap: 20px;
       margin-bottom: 24px;
     }
-
-    .upgrade-banner-text h3 {
-      font-family: 'Playfair Display', serif;
-      font-size: 1.1rem;
-      color: white;
-      margin-bottom: 4px;
-    }
+    .upgrade-banner-text h3 { font-family: 'Playfair Display', serif; font-size: 1.1rem; color: white; margin-bottom: 4px; }
     .upgrade-banner-text p { font-size: 13px; color: rgba(255,255,255,0.55); }
     .upgrade-banner-text strong { color: var(--gold); }
 
     .btn-banner-upgrade {
-      padding: 10px 22px;
-      background: var(--gold);
-      color: white;
-      border: none;
-      border-radius: 8px;
-      font-family: inherit;
-      font-size: 14px;
-      font-weight: 600;
-      cursor: pointer;
-      white-space: nowrap;
-      text-decoration: none;
+      padding: 10px 22px; background: var(--gold); color: white;
+      border: none; border-radius: 8px;
+      font-family: inherit; font-size: 14px; font-weight: 600;
+      cursor: pointer; white-space: nowrap; text-decoration: none;
       transition: background 0.2s;
     }
     .btn-banner-upgrade:hover { background: var(--gold-dark); }
@@ -146,31 +108,18 @@
     /* GENERATOR */
     .main-layout { display: grid; grid-template-columns: 350px 1fr; gap: 30px; }
 
-    .sidebar {
-      background: white;
-      border-radius: 12px;
-      padding: 24px;
-      height: fit-content;
-      position: sticky;
-      top: 130px;
-      border: 1px solid var(--border);
-    }
-
+    .sidebar { background: white; border-radius: 12px; padding: 24px; height: fit-content; position: sticky; top: 130px; border: 1px solid var(--border); }
     .sidebar h2 { font-family: 'Playfair Display', serif; font-size: 20px; margin-bottom: 20px; }
+
     .form-group { margin-bottom: 18px; }
     .form-group label { display: block; margin-bottom: 7px; font-weight: 500; font-size: 14px; }
 
     .form-group input,
     .form-group textarea,
     .form-group select {
-      width: 100%;
-      padding: 11px;
-      border: 1px solid var(--border);
-      border-radius: 8px;
-      font-family: inherit;
-      font-size: 14px;
-      background: white;
-      transition: border-color 0.2s;
+      width: 100%; padding: 11px; border: 1px solid var(--border);
+      border-radius: 8px; font-family: inherit; font-size: 14px;
+      background: white; transition: border-color 0.2s;
     }
     .form-group input:focus,
     .form-group textarea:focus,
@@ -178,28 +127,14 @@
     .form-group textarea { resize: vertical; min-height: 80px; }
 
     .btn {
-      width: 100%;
-      padding: 13px;
-      background: var(--gold);
-      color: white;
-      border: none;
-      border-radius: 8px;
-      font-weight: 600;
-      font-size: 15px;
-      cursor: pointer;
-      transition: background 0.2s;
-      font-family: inherit;
+      width: 100%; padding: 13px; background: var(--gold); color: white;
+      border: none; border-radius: 8px; font-weight: 600; font-size: 15px;
+      cursor: pointer; transition: background 0.2s; font-family: inherit;
     }
     .btn:hover { background: var(--gold-dark); }
     .btn:disabled { opacity: 0.6; cursor: not-allowed; }
 
-    .main-content {
-      background: white;
-      border-radius: 12px;
-      padding: 40px;
-      border: 1px solid var(--border);
-      min-height: 600px;
-    }
+    .main-content { background: white; border-radius: 12px; padding: 40px; border: 1px solid var(--border); min-height: 600px; }
 
     .empty-state { text-align: center; padding: 100px 40px; color: var(--gray); }
     .empty-state svg { width: 80px; height: 80px; margin-bottom: 20px; opacity: 0.3; }
@@ -208,30 +143,15 @@
     .sermon-output { display: none; }
     .sermon-output.active { display: block; }
 
-    .sermon-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: flex-start;
-      margin-bottom: 30px;
-      padding-bottom: 20px;
-      border-bottom: 1px solid var(--border);
-    }
-
+    .sermon-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 30px; padding-bottom: 20px; border-bottom: 1px solid var(--border); }
     .sermon-title { font-family: 'Playfair Display', serif; font-size: 30px; font-weight: 700; margin-bottom: 8px; }
     .sermon-meta { color: var(--gray); font-size: 14px; }
     .sermon-actions { display: flex; gap: 12px; flex-shrink: 0; }
 
     .btn-sm {
-      padding: 8px 16px;
-      background: white;
-      border: 1px solid var(--border);
-      border-radius: 6px;
-      font-size: 14px;
-      cursor: pointer;
-      transition: all 0.2s;
-      color: var(--dark);
-      font-weight: 500;
-      font-family: inherit;
+      padding: 8px 16px; background: white; border: 1px solid var(--border);
+      border-radius: 6px; font-size: 14px; cursor: pointer;
+      transition: all 0.2s; color: var(--dark); font-weight: 500; font-family: inherit;
     }
     .btn-sm:hover { border-color: var(--gold); color: var(--gold); }
 
@@ -244,14 +164,7 @@
 
     .loading { display: none; text-align: center; padding: 80px 40px; }
     .loading.active { display: block; }
-    .loading-spinner {
-      width: 50px; height: 50px;
-      border: 4px solid rgba(201,145,42,0.2);
-      border-top-color: var(--gold);
-      border-radius: 50%;
-      animation: spin 1s linear infinite;
-      margin: 0 auto 20px;
-    }
+    .loading-spinner { width: 50px; height: 50px; border: 4px solid rgba(201,145,42,0.2); border-top-color: var(--gold); border-radius: 50%; animation: spin 1s linear infinite; margin: 0 auto 20px; }
     @keyframes spin { to { transform: rotate(360deg); } }
     .loading p { color: var(--gray); font-size: 15px; }
 
@@ -259,28 +172,12 @@
     .page-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px; }
     .page-title { font-family: 'Playfair Display', serif; font-size: 28px; font-weight: 700; }
 
-    .search-bar {
-      width: 100%;
-      padding: 12px 16px;
-      border: 1px solid var(--border);
-      border-radius: 8px;
-      font-family: inherit;
-      font-size: 14px;
-      margin-bottom: 20px;
-      background: white;
-    }
+    .search-bar { width: 100%; padding: 12px 16px; border: 1px solid var(--border); border-radius: 8px; font-family: inherit; font-size: 14px; margin-bottom: 20px; background: white; }
     .search-bar:focus { outline: none; border-color: var(--gold); }
 
     .history-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 16px; }
 
-    .sermon-card {
-      background: white;
-      border: 1px solid var(--border);
-      border-radius: 12px;
-      padding: 20px;
-      cursor: pointer;
-      transition: all 0.2s;
-    }
+    .sermon-card { background: white; border: 1px solid var(--border); border-radius: 12px; padding: 20px; cursor: pointer; transition: all 0.2s; }
     .sermon-card:hover { border-color: var(--gold); box-shadow: 0 4px 16px rgba(201,145,42,0.1); }
 
     .sermon-card-title { font-family: 'Playfair Display', serif; font-size: 17px; font-weight: 700; margin-bottom: 6px; }
@@ -292,37 +189,10 @@
     .history-empty h3 { font-family: 'Playfair Display', serif; font-size: 22px; margin-bottom: 8px; color: var(--dark); }
 
     /* MODAL */
-    .modal-overlay {
-      display: none;
-      position: fixed;
-      inset: 0;
-      background: rgba(0,0,0,0.5);
-      z-index: 200;
-      align-items: center;
-      justify-content: center;
-      padding: 20px;
-    }
+    .modal-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.5); z-index: 200; align-items: center; justify-content: center; padding: 20px; }
     .modal-overlay.active { display: flex; }
-
-    .modal {
-      background: white;
-      border-radius: 16px;
-      padding: 36px;
-      max-width: 780px;
-      width: 100%;
-      max-height: 85vh;
-      overflow-y: auto;
-    }
-
-    .modal-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: flex-start;
-      margin-bottom: 20px;
-      padding-bottom: 18px;
-      border-bottom: 1px solid var(--border);
-    }
-
+    .modal { background: white; border-radius: 16px; padding: 36px; max-width: 780px; width: 100%; max-height: 85vh; overflow-y: auto; }
+    .modal-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 20px; padding-bottom: 18px; border-bottom: 1px solid var(--border); }
     .modal-close { background: none; border: none; font-size: 28px; cursor: pointer; color: var(--gray); padding: 0; line-height: 1; flex-shrink: 0; margin-left: 16px; }
     .modal-close:hover { color: var(--dark); }
 
@@ -330,12 +200,10 @@
     .add-schedule-form { background: white; border: 1px solid var(--border); border-radius: 12px; padding: 24px; margin-bottom: 24px; }
     .add-schedule-form h3 { font-family: 'Playfair Display', serif; font-size: 18px; margin-bottom: 16px; }
     .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
-
     .btn-gold { padding: 10px 20px; background: var(--gold); border: none; border-radius: 8px; color: white; font-family: inherit; font-size: 14px; font-weight: 500; cursor: pointer; }
     .btn-gold:hover { background: var(--gold-dark); }
 
     .schedule-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 16px; }
-
     .schedule-card { background: white; border: 1px solid var(--border); border-radius: 12px; padding: 20px; transition: all 0.2s; }
     .schedule-card:hover { border-color: var(--gold); }
     .schedule-date { font-size: 12px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: var(--gold); margin-bottom: 8px; }
@@ -361,10 +229,11 @@
   <header>
     <div class="container">
       <div class="header-content">
-        <a href="/index.html" class="logo">Sermon<span>Scribe</span></a>
+        <a href="/dashboard.html" class="logo">Sermon<span>Scribe</span></a>
         <div class="header-right">
           <span class="user-email" id="user-email"></span>
-          <a href="/upgrade.html" class="btn-upgrade">⚡ Upgrade</a>
+          <a href="/dashboard.html" class="btn-home">← Dashboard</a>
+          <a href="/upgrade.html" class="btn-upgrade" id="upgrade-btn">⚡ Upgrade</a>
           <button class="btn-signout" onclick="handleSignOut()">Sign Out</button>
         </div>
       </div>
@@ -379,14 +248,12 @@
 
   <div class="container">
 
-    <!-- GENERATOR PAGE -->
+    <!-- GENERATOR -->
     <div class="page active" id="page-generator">
-
-      <!-- UPGRADE BANNER -->
-      <div class="upgrade-banner">
+      <div class="upgrade-banner" id="upgrade-banner">
         <div class="upgrade-banner-text">
           <h3>You're on the Free Plan — <strong>3 sermons/month</strong></h3>
-          <p>Upgrade to Pro for <strong>unlimited sermons</strong>, illustration suggestions, cross-references, and full sermon history. Just <strong>$19/month</strong> via e-Transfer.</p>
+          <p>Upgrade to Pro for <strong>unlimited sermons</strong>, full history, scheduling & illustration suggestions. Just <strong>$19/month</strong> via e-Transfer.</p>
         </div>
         <a href="/upgrade.html" class="btn-banner-upgrade">Upgrade to Pro →</a>
       </div>
@@ -463,7 +330,7 @@
       </div>
     </div>
 
-    <!-- HISTORY PAGE -->
+    <!-- HISTORY -->
     <div class="page" id="page-history">
       <div class="page-header">
         <h1 class="page-title">Sermon History</h1>
@@ -474,44 +341,30 @@
       </div>
     </div>
 
-    <!-- SCHEDULE PAGE -->
+    <!-- SCHEDULE -->
     <div class="page" id="page-schedule">
       <div class="page-header">
         <h1 class="page-title">Sermon Schedule</h1>
       </div>
-
       <div class="add-schedule-form">
         <h3>Add to Schedule</h3>
         <div class="form-row">
-          <div class="form-group">
-            <label>Date</label>
-            <input type="date" id="schedule-date">
-          </div>
-          <div class="form-group">
-            <label>Topic or Title</label>
-            <input type="text" id="schedule-topic" placeholder="e.g., The Good Shepherd">
-          </div>
+          <div class="form-group"><label>Date</label><input type="date" id="schedule-date"></div>
+          <div class="form-group"><label>Topic or Title</label><input type="text" id="schedule-topic" placeholder="e.g., The Good Shepherd"></div>
         </div>
         <div class="form-row">
-          <div class="form-group">
-            <label>Scripture</label>
-            <input type="text" id="schedule-scripture" placeholder="e.g., Psalm 23">
-          </div>
-          <div class="form-group">
-            <label>Notes</label>
-            <input type="text" id="schedule-notes" placeholder="e.g., Easter Sunday">
-          </div>
+          <div class="form-group"><label>Scripture</label><input type="text" id="schedule-scripture" placeholder="e.g., Psalm 23"></div>
+          <div class="form-group"><label>Notes</label><input type="text" id="schedule-notes" placeholder="e.g., Easter Sunday"></div>
         </div>
         <button class="btn-gold" style="margin-top:8px" onclick="addScheduleItem()">Add to Schedule</button>
       </div>
-
       <div class="schedule-grid" id="schedule-grid"></div>
     </div>
 
   </div>
 </div>
 
-<!-- SERMON DETAIL MODAL -->
+<!-- MODAL -->
 <div class="modal-overlay" id="sermon-modal">
   <div class="modal">
     <div class="modal-header">
@@ -542,16 +395,27 @@
   let currentModalSermonId = null;
   let scheduleItems = [];
 
-  sb.auth.getSession().then(({ data }) => {
-    if (!data.session) {
-      window.location.href = '/login.html';
-    } else {
-      currentUser = data.session.user;
-      document.getElementById('auth-gate').style.display = 'none';
-      document.getElementById('app-content').style.display = 'block';
-      document.getElementById('user-email').textContent = currentUser.email;
-      loadSchedule();
-    }
+  sb.auth.getSession().then(async ({ data }) => {
+    if (!data.session) { window.location.href = '/login.html'; return; }
+
+    currentUser = data.session.user;
+    document.getElementById('auth-gate').style.display = 'none';
+    document.getElementById('app-content').style.display = 'block';
+    document.getElementById('user-email').textContent = currentUser.email;
+    loadSchedule();
+
+    // Check if pro — hide upgrade elements if so
+    try {
+      const res = await fetch(
+        SUPABASE_URL + '/rest/v1/subscriptions?user_id=eq.' + currentUser.id + '&status=eq.active&limit=1',
+        { headers: { 'apikey': SUPABASE_KEY, 'Authorization': 'Bearer ' + data.session.access_token } }
+      );
+      const subs = await res.json();
+      if (subs && subs.length > 0) {
+        document.getElementById('upgrade-banner').style.display = 'none';
+        document.getElementById('upgrade-btn').style.display = 'none';
+      }
+    } catch(e) { /* keep showing upgrade */ }
   });
 
   async function handleSignOut() {
@@ -568,7 +432,6 @@
     if (page === 'schedule') renderSchedule();
   }
 
-  // GENERATOR
   document.getElementById('sermon-form').addEventListener('submit', async (e) => {
     e.preventDefault();
     await generateSermon();
@@ -596,16 +459,14 @@
       const rawBody = await response.text();
       let data;
       try { data = JSON.parse(rawBody); }
-      catch { throw new Error(`Non-JSON response: ${rawBody.slice(0, 200)}`); }
-
+      catch { throw new Error(`Non-JSON: ${rawBody.slice(0, 200)}`); }
       if (!response.ok) throw new Error(data.error || 'Failed to generate');
 
       const sermonText = data.text || data.content?.[0]?.text;
-      if (!sermonText) throw new Error('No sermon text returned.');
+      if (!sermonText) throw new Error('No text returned.');
 
-      // Save with user's auth token
       const { data: { session } } = await sb.auth.getSession();
-      const saveRes = await fetch(SUPABASE_URL + '/rest/v1/sermons', {
+      await fetch(SUPABASE_URL + '/rest/v1/sermons', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -613,21 +474,8 @@
           'Authorization': 'Bearer ' + session.access_token,
           'Prefer': 'return=minimal'
         },
-        body: JSON.stringify({
-          user_id: currentUser.id,
-          topic,
-          scripture,
-          tone,
-          length,
-          notes,
-          full_text: sermonText
-        })
+        body: JSON.stringify({ user_id: currentUser.id, topic, scripture, tone, length, notes, full_text: sermonText })
       });
-
-      if (!saveRes.ok) {
-        const errText = await saveRes.text();
-        console.error('Save failed:', errText);
-      }
 
       document.getElementById('sermon-title').textContent = topic;
       document.getElementById('sermon-meta').textContent = (scripture || 'No scripture') + ' · ' + tone + ' · ' + length + ' min';
@@ -635,7 +483,7 @@
       document.getElementById('sermon-output').classList.add('active');
 
     } catch (error) {
-      alert('Failed to generate sermon: ' + error.message);
+      alert('Failed: ' + error.message);
       document.getElementById('empty-state').style.display = 'block';
     } finally {
       document.getElementById('loading-state').classList.remove('active');
@@ -645,59 +493,43 @@
 
   document.getElementById('copy-btn').addEventListener('click', () => {
     navigator.clipboard.writeText(document.getElementById('sermon-content').innerText);
-    alert('Copied to clipboard!');
+    alert('Copied!');
   });
-
   document.getElementById('regenerate-btn').addEventListener('click', generateSermon);
 
-  // HISTORY
   async function loadHistory() {
     const grid = document.getElementById('history-grid');
     grid.innerHTML = '<div class="history-empty"><h3>Loading your sermons...</h3></div>';
-
     try {
       const { data: { session } } = await sb.auth.getSession();
       const res = await fetch(
         SUPABASE_URL + '/rest/v1/sermons?user_id=eq.' + currentUser.id + '&order=created_at.desc&select=*',
-        {
-          headers: {
-            'apikey': SUPABASE_KEY,
-            'Authorization': 'Bearer ' + session.access_token
-          }
-        }
+        { headers: { 'apikey': SUPABASE_KEY, 'Authorization': 'Bearer ' + session.access_token } }
       );
-
-      if (!res.ok) {
-        const err = await res.text();
-        console.error('History fetch error:', err);
-        grid.innerHTML = '<div class="history-empty"><h3>Could not load sermons</h3><p>' + err + '</p></div>';
-        return;
-      }
-
+      if (!res.ok) { const e = await res.text(); throw new Error(e); }
       allSermons = await res.json();
       renderHistory(allSermons);
     } catch (e) {
-      console.error(e);
-      grid.innerHTML = '<div class="history-empty"><h3>Error loading sermons</h3><p>' + e.message + '</p></div>';
+      grid.innerHTML = '<div class="history-empty"><h3>Could not load sermons</h3><p style="font-size:13px;margin-top:8px">' + e.message + '</p></div>';
     }
   }
 
   function renderHistory(sermons) {
     const grid = document.getElementById('history-grid');
     if (!sermons || sermons.length === 0) {
-      grid.innerHTML = '<div class="history-empty"><h3>No sermons yet</h3><p>Generate your first sermon — it will appear here automatically</p></div>';
+      grid.innerHTML = '<div class="history-empty"><h3>No sermons yet</h3><p>Generate your first sermon — it will appear here</p></div>';
       return;
     }
     grid.innerHTML = sermons.map(s => `
       <div class="sermon-card" onclick="openSermon('${s.id}')">
         <div class="sermon-card-title">${s.topic || s.theme || 'Untitled'}</div>
         <div class="sermon-card-meta">
-          ${(s.scripture || s.passage) ? `<span>${s.scripture || s.passage}</span>` : ''}
+          ${(s.scripture||s.passage) ? `<span>${s.scripture||s.passage}</span>` : ''}
           ${s.tone ? `<span class="sermon-card-badge">${s.tone}</span>` : ''}
           ${s.length ? `<span>${s.length} min</span>` : ''}
-          <span>${new Date(s.created_at).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}</span>
+          <span>${new Date(s.created_at).toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'})}</span>
         </div>
-        <div class="sermon-card-preview">${((s.full_text || s.outline || '')).toString().replace(/<[^>]*>/g, '').slice(0, 150)}...</div>
+        <div class="sermon-card-preview">${((s.full_text||'')).toString().replace(/<[^>]*>/g,'').slice(0,150)}...</div>
       </div>
     `).join('');
   }
@@ -718,48 +550,32 @@
     if (!s) return;
     currentModalSermonId = id;
     document.getElementById('modal-title').textContent = s.topic || s.theme || 'Untitled';
-    document.getElementById('modal-meta').textContent =
-      (s.scripture || s.passage || 'No scripture') + ' · ' + (s.tone || '') + ' · ' +
-      new Date(s.created_at).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' });
-    const text = (s.full_text || (typeof s.outline === 'object' ? JSON.stringify(s.outline, null, 2) : s.outline) || 'No content saved.');
-    document.getElementById('modal-content').innerHTML = text.toString().replace(/\n/g, '<br>');
+    document.getElementById('modal-meta').textContent = (s.scripture||s.passage||'No scripture') + ' · ' + (s.tone||'') + ' · ' + new Date(s.created_at).toLocaleDateString('en-US',{month:'long',day:'numeric',year:'numeric'});
+    const text = s.full_text || 'No content saved.';
+    document.getElementById('modal-content').innerHTML = text.toString().replace(/\n/g,'<br>');
     document.getElementById('sermon-modal').classList.add('active');
   }
 
-  function closeModal() {
-    document.getElementById('sermon-modal').classList.remove('active');
-    currentModalSermonId = null;
-  }
-
-  function copyModalSermon() {
-    navigator.clipboard.writeText(document.getElementById('modal-content').innerText);
-    alert('Copied to clipboard!');
-  }
+  function closeModal() { document.getElementById('sermon-modal').classList.remove('active'); currentModalSermonId = null; }
+  function copyModalSermon() { navigator.clipboard.writeText(document.getElementById('modal-content').innerText); alert('Copied!'); }
 
   async function deleteSermon() {
-    if (!currentModalSermonId || !confirm('Delete this sermon? This cannot be undone.')) return;
+    if (!currentModalSermonId || !confirm('Delete this sermon?')) return;
     const { data: { session } } = await sb.auth.getSession();
     await fetch(SUPABASE_URL + '/rest/v1/sermons?id=eq.' + currentModalSermonId, {
       method: 'DELETE',
       headers: { 'apikey': SUPABASE_KEY, 'Authorization': 'Bearer ' + session.access_token }
     });
-    closeModal();
-    loadHistory();
+    closeModal(); loadHistory();
   }
 
-  document.getElementById('sermon-modal').addEventListener('click', function(e) {
-    if (e.target === this) closeModal();
-  });
+  document.getElementById('sermon-modal').addEventListener('click', function(e) { if (e.target === this) closeModal(); });
 
-  // SCHEDULE
   function loadSchedule() {
-    const stored = localStorage.getItem('schedule_' + (currentUser?.id || ''));
+    const stored = localStorage.getItem('schedule_' + (currentUser?.id||''));
     scheduleItems = stored ? JSON.parse(stored) : [];
   }
-
-  function saveSchedule() {
-    localStorage.setItem('schedule_' + currentUser.id, JSON.stringify(scheduleItems));
-  }
+  function saveSchedule() { localStorage.setItem('schedule_' + currentUser.id, JSON.stringify(scheduleItems)); }
 
   function addScheduleItem() {
     const date = document.getElementById('schedule-date').value;
@@ -768,20 +584,12 @@
     const notes = document.getElementById('schedule-notes').value.trim();
     if (!date || !topic) { alert('Please enter a date and topic.'); return; }
     scheduleItems.push({ id: Date.now(), date, topic, scripture, notes });
-    scheduleItems.sort((a, b) => new Date(a.date) - new Date(b.date));
-    saveSchedule();
-    renderSchedule();
-    document.getElementById('schedule-date').value = '';
-    document.getElementById('schedule-topic').value = '';
-    document.getElementById('schedule-scripture').value = '';
-    document.getElementById('schedule-notes').value = '';
+    scheduleItems.sort((a,b) => new Date(a.date) - new Date(b.date));
+    saveSchedule(); renderSchedule();
+    ['schedule-date','schedule-topic','schedule-scripture','schedule-notes'].forEach(id => document.getElementById(id).value = '');
   }
 
-  function removeScheduleItem(id) {
-    scheduleItems = scheduleItems.filter(s => s.id !== id);
-    saveSchedule();
-    renderSchedule();
-  }
+  function removeScheduleItem(id) { scheduleItems = scheduleItems.filter(s => s.id !== id); saveSchedule(); renderSchedule(); }
 
   function renderSchedule() {
     const grid = document.getElementById('schedule-grid');
@@ -791,10 +599,10 @@
     }
     grid.innerHTML = scheduleItems.map(s => `
       <div class="schedule-card">
-        <div class="schedule-date">${new Date(s.date + 'T12:00:00').toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric', year: 'numeric' })}</div>
+        <div class="schedule-date">${new Date(s.date+'T12:00:00').toLocaleDateString('en-US',{weekday:'long',month:'long',day:'numeric',year:'numeric'})}</div>
         <div class="schedule-title">${s.topic}</div>
-        <div class="schedule-meta">${[s.scripture, s.notes].filter(Boolean).join(' · ')}</div>
-        <div style="display:flex; gap:8px; margin-top:12px;">
+        <div class="schedule-meta">${[s.scripture,s.notes].filter(Boolean).join(' · ')}</div>
+        <div style="display:flex;gap:8px;margin-top:12px;">
           <button class="btn-sm" onclick="prefillGenerator('${s.topic.replace(/'/g,"\\'")}','${s.scripture.replace(/'/g,"\\'")}')">Generate Sermon</button>
           <button class="btn-sm" onclick="removeScheduleItem(${s.id})" style="color:#c53030;">Remove</button>
         </div>
