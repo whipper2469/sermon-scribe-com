@@ -5,7 +5,6 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Sermon Scribe — Prepare with Purpose</title>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <style>
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -159,14 +158,6 @@
   }
   .btn-ghost:hover { border-color: var(--gold); }
 
-  .hero-note {
-    margin-top: 1.2rem;
-    font-size: 0.8rem;
-    color: var(--muted);
-    opacity: 0;
-    animation: fadeUp 0.8s 1s forwards;
-  }
-
   /* DIVIDER */
   .divider {
     display: flex; align-items: center; gap: 1rem;
@@ -230,7 +221,6 @@
     border: 1px solid var(--border);
     border-radius: 8px;
     padding: 2rem 1.75rem;
-    position: relative;
     transition: transform 0.2s, box-shadow 0.2s;
   }
   .step:hover { transform: translateY(-3px); box-shadow: 0 8px 32px rgba(201,145,42,0.12); }
@@ -251,11 +241,7 @@
     margin-bottom: 0.6rem;
   }
 
-  .step p {
-    color: var(--muted);
-    font-size: 0.92rem;
-    line-height: 1.65;
-  }
+  .step p { color: var(--muted); font-size: 0.92rem; line-height: 1.65; }
 
   /* FEATURES */
   .features-grid {
@@ -274,10 +260,7 @@
   }
   .feature-card:hover { border-color: var(--gold); }
 
-  .feature-icon {
-    font-size: 1.6rem;
-    margin-bottom: 0.9rem;
-  }
+  .feature-icon { font-size: 1.6rem; margin-bottom: 0.9rem; }
 
   .feature-card h3 {
     font-family: 'Playfair Display', serif;
@@ -286,11 +269,7 @@
     margin-bottom: 0.5rem;
   }
 
-  .feature-card p {
-    color: var(--muted);
-    font-size: 0.88rem;
-    line-height: 1.65;
-  }
+  .feature-card p { color: var(--muted); font-size: 0.88rem; line-height: 1.65; }
 
   /* PRICING */
   .pricing-grid {
@@ -349,11 +328,7 @@
     margin-bottom: 0.25rem;
   }
 
-  .price-period {
-    font-size: 0.85rem;
-    color: var(--muted);
-    margin-bottom: 1.5rem;
-  }
+  .price-period { font-size: 0.85rem; color: var(--muted); margin-bottom: 1.5rem; }
   .price-card.featured .price-period { color: rgba(255,255,255,0.5); }
 
   .price-features {
@@ -365,22 +340,10 @@
     gap: 0.6rem;
   }
 
-  .price-features li {
-    font-size: 0.88rem;
-    color: var(--muted);
-    display: flex;
-    align-items: flex-start;
-    gap: 0.5rem;
-  }
+  .price-features li { font-size: 0.88rem; color: var(--muted); display: flex; align-items: flex-start; gap: 0.5rem; }
   .price-card.featured .price-features li { color: rgba(255,255,255,0.7); }
 
-  .price-features li::before {
-    content: '✓';
-    color: var(--gold);
-    font-weight: 700;
-    flex-shrink: 0;
-    margin-top: 0.05rem;
-  }
+  .price-features li::before { content: '✓'; color: var(--gold); font-weight: 700; flex-shrink: 0; }
 
   .price-btn {
     width: 100%;
@@ -393,174 +356,14 @@
     background: transparent;
     color: var(--gold);
     transition: all 0.2s;
+    font-family: inherit;
+    text-decoration: none;
+    display: block;
   }
-  .price-card.featured .price-btn {
-    background: var(--gold);
-    color: white;
-    border-color: var(--gold);
-  }
+  .price-card.featured .price-btn { background: var(--gold); color: white; }
   .price-btn:hover { background: var(--gold); color: white; }
 
-  /* MVP SPEC SECTION */
-  .spec-section {
-    background: var(--ink);
-    color: white;
-    padding: 6rem 2rem;
-  }
-
-  .spec-inner {
-    max-width: 1000px;
-    margin: 0 auto;
-  }
-
-  .spec-section .section-label { color: var(--gold-light); }
-  .spec-section .section-title { color: white; }
-  .spec-section .section-sub { color: rgba(255,255,255,0.55); }
-
-  .spec-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-    gap: 1.5rem;
-    margin-top: 3rem;
-  }
-
-  .spec-card {
-    border: 1px solid rgba(201,145,42,0.2);
-    border-radius: 8px;
-    padding: 1.75rem;
-    background: rgba(255,255,255,0.04);
-  }
-
-  .spec-card h3 {
-    font-family: 'Playfair Display', serif;
-    font-size: 1.05rem;
-    color: var(--gold-light);
-    margin-bottom: 1rem;
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-  }
-
-  .spec-list {
-    list-style: none;
-    display: flex;
-    flex-direction: column;
-    gap: 0.5rem;
-  }
-
-  .spec-list li {
-    font-size: 0.88rem;
-    color: rgba(255,255,255,0.65);
-    padding-left: 1rem;
-    position: relative;
-    line-height: 1.5;
-  }
-
-  .spec-list li::before {
-    content: '→';
-    position: absolute;
-    left: 0;
-    color: var(--gold);
-    font-size: 0.75rem;
-  }
-
-  .timeline {
-    margin-top: 3rem;
-    border: 1px solid rgba(201,145,42,0.2);
-    border-radius: 8px;
-    overflow: hidden;
-  }
-
-  .timeline-header {
-    background: rgba(201,145,42,0.15);
-    padding: 1rem 1.75rem;
-    font-family: 'Playfair Display', serif;
-    font-size: 1rem;
-    color: var(--gold-light);
-  }
-
-  .timeline-rows { display: flex; flex-direction: column; }
-
-  .timeline-row {
-    display: grid;
-    grid-template-columns: 90px 1fr;
-    gap: 1.5rem;
-    padding: 1rem 1.75rem;
-    border-top: 1px solid rgba(201,145,42,0.1);
-    align-items: start;
-  }
-
-  .timeline-week {
-    font-size: 0.75rem;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    color: var(--gold);
-    font-weight: 600;
-    padding-top: 0.1rem;
-  }
-
-  .timeline-task {
-    font-size: 0.88rem;
-    color: rgba(255,255,255,0.7);
-    line-height: 1.6;
-  }
-
-  /* FOOTER CTA */
-  .footer-cta {
-    text-align: center;
-    padding: 6rem 2rem;
-    background: var(--parchment);
-    border-top: 1px solid var(--border);
-  }
-
-  .footer-cta h2 {
-    font-family: 'Playfair Display', serif;
-    font-size: clamp(1.8rem, 4vw, 3rem);
-    font-weight: 700;
-    margin-bottom: 1rem;
-  }
-
-  .footer-cta p {
-    color: var(--muted);
-    margin-bottom: 2rem;
-    font-size: 1rem;
-  }
-
-  .footer-bottom {
-    text-align: center;
-    padding: 2rem;
-    font-size: 0.8rem;
-    color: var(--muted);
-    border-top: 1px solid var(--border);
-  }
-
-  @keyframes fadeUp {
-    from { opacity: 0; transform: translateY(20px); }
-    to { opacity: 1; transform: translateY(0); }
-  }
-
-  /* WAITLIST FORM */
-  .waitlist-form {
-    display: flex;
-    gap: 0.75rem;
-    justify-content: center;
-    flex-wrap: wrap;
-    margin-top: 1.5rem;
-  }
-
-  .waitlist-input {
-    padding: 0.85rem 1.2rem;
-    border: 1.5px solid var(--border);
-    border-radius: 4px;
-    font-size: 0.95rem;
-    font-family: 'DM Sans', sans-serif;
-    background: white;
-    width: 260px;
-    outline: none;
-    transition: border-color 0.2s;
-  }
-  .waitlist-input:focus { border-color: var(--gold); }
-
+  /* QUOTE */
   .quote-block {
     border-left: 3px solid var(--gold);
     padding: 1.25rem 1.5rem;
@@ -582,7 +385,20 @@
     font-family: 'DM Sans', sans-serif;
     font-size: 0.82rem;
     color: var(--muted);
-    letter-spacing: 0.05em;
+  }
+
+  /* FOOTER */
+  .footer-bottom {
+    text-align: center;
+    padding: 2rem;
+    font-size: 0.8rem;
+    color: var(--muted);
+    border-top: 1px solid var(--border);
+  }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
   }
 </style>
 </head>
@@ -591,7 +407,7 @@
 <!-- NAV -->
 <nav>
   <div class="nav-logo">Sermon<span>Scribe</span></div>
-  <a href="#waitlist" class="nav-cta">Join Waitlist</a>
+  <a href="/login.html" class="nav-cta">Sign In</a>
 </nav>
 
 <!-- HERO -->
@@ -600,10 +416,9 @@
   <h1>Spend less time <em>outlining.</em><br>More time in the Word.</h1>
   <p class="hero-sub">Sermon Scribe helps pastors and ministry leaders prepare structured, compelling sermon outlines in minutes — not hours.</p>
   <div class="hero-actions">
-    <a href="/app.html" class="btn-primary">Try It Free</a>
+    <a href="/login.html" class="btn-primary">Get Started Free</a>
     <a href="#how-it-works" class="btn-ghost">See How It Works</a>
   </div>
-  <p class="hero-note">Free to start · No credit card required</p>
 </section>
 
 <div class="divider">How it works</div>
@@ -623,17 +438,17 @@
     <div class="step">
       <div class="step-num">02</div>
       <h3>Set Your Context</h3>
-      <p>Choose your denomination, congregation tone, and service type (Sunday morning, midweek, youth, etc.).</p>
+      <p>Choose your tone and service type — Sunday morning, midweek, youth, and more.</p>
     </div>
     <div class="step">
       <div class="step-num">03</div>
-      <h3>Get Your Outline</h3>
-      <p>Receive a structured outline with 3 key points, illustrations, cross-references, and a closing call to action.</p>
+      <h3>Get Your Sermon</h3>
+      <p>Receive a full sermon with key points, illustrations, cross-references, and a closing call to action.</p>
     </div>
     <div class="step">
       <div class="step-num">04</div>
-      <h3>Refine & Export</h3>
-      <p>Edit inline, regenerate any section, and export to PDF or copy directly to your notes app.</p>
+      <h3>Copy & Preach</h3>
+      <p>Edit inline, regenerate any section, and copy directly to your notes app.</p>
     </div>
   </div>
 </section>
@@ -649,33 +464,33 @@
   <div class="features-grid">
     <div class="feature-card">
       <div class="feature-icon">📖</div>
-      <h3>Scripture-First Outlines</h3>
-      <p>Every outline starts with the text. Cross-references and related passages are suggested to deepen your preparation.</p>
+      <h3>Scripture-First Sermons</h3>
+      <p>Every sermon starts with the text. Cross-references and related passages suggested to deepen your preparation.</p>
     </div>
     <div class="feature-card">
       <div class="feature-icon">🎯</div>
-      <h3>Congregation-Aware</h3>
-      <p>Set your denomination, tone (expository, topical, narrative), and audience so the output matches your pulpit style.</p>
+      <h3>Tone & Style Control</h3>
+      <p>Set your tone — encouraging, challenging, teaching, evangelistic, or pastoral — so the output matches your pulpit style.</p>
     </div>
     <div class="feature-card">
       <div class="feature-icon">💡</div>
       <h3>Illustration Suggestions</h3>
-      <p>Get 3–5 illustration ideas per sermon — stories, analogies, and cultural hooks that land with your congregation.</p>
+      <p>Get illustration ideas per sermon — stories, analogies, and hooks that land with your congregation.</p>
     </div>
     <div class="feature-card">
       <div class="feature-icon">🔁</div>
-      <h3>Regenerate Any Section</h3>
-      <p>Don't like a point? Regenerate just that section without losing the rest of your outline.</p>
+      <h3>Regenerate Anytime</h3>
+      <p>Don't like the result? Regenerate with one click without losing your inputs.</p>
     </div>
     <div class="feature-card">
       <div class="feature-icon">📄</div>
-      <h3>Export Anywhere</h3>
-      <p>Copy to clipboard, export as PDF, or share a link with your worship team or co-pastors.</p>
+      <h3>Copy Anywhere</h3>
+      <p>Copy to clipboard and paste directly into your notes app, Word, or wherever you prepare.</p>
     </div>
     <div class="feature-card">
       <div class="feature-icon">🗂️</div>
       <h3>Sermon History</h3>
-      <p>Every outline you generate is saved. Build a searchable library of your past sermons over time.</p>
+      <p>Every sermon you generate is saved. Build a searchable library of your past sermons over time.</p>
     </div>
   </div>
 </section>
@@ -692,7 +507,7 @@
 <section class="section" id="pricing">
   <p class="section-label">Simple Pricing</p>
   <h2 class="section-title">Start free. Grow with us.</h2>
-  <p class="section-sub">No contracts. Cancel anytime. Early adopters lock in founding pricing forever.</p>
+  <p class="section-sub">No contracts. Cancel anytime.</p>
 
   <div class="pricing-grid">
     <div class="price-card">
@@ -700,12 +515,12 @@
       <div class="price-amount">$0</div>
       <p class="price-period">forever</p>
       <ul class="price-features">
-        <li>1 sermon outline per month</li>
-        <li>Basic 3-point structure</li>
+        <li>3 sermons per month</li>
+        <li>Basic structure</li>
         <li>Copy to clipboard</li>
         <li>Email support</li>
       </ul>
-      <button class="price-btn">Get Started Free</button>
+      <a href="/login.html" class="price-btn">Get Started Free</a>
     </div>
 
     <div class="price-card featured">
@@ -714,14 +529,13 @@
       <div class="price-amount">$19</div>
       <p class="price-period">per month</p>
       <ul class="price-features">
-        <li>Unlimited sermon outlines</li>
+        <li>Unlimited sermons</li>
         <li>Illustration suggestions</li>
         <li>Cross-reference suggestions</li>
-        <li>PDF export</li>
         <li>Sermon history & search</li>
         <li>Regenerate any section</li>
       </ul>
-      <button class="price-btn">Start Pro — $19/mo</button>
+      <a href="/login.html" class="price-btn">Start Pro — $19/mo</a>
     </div>
 
     <div class="price-card">
@@ -735,88 +549,14 @@
         <li>Series planning tools</li>
         <li>Priority support</li>
       </ul>
-      <button class="price-btn">Start Ministry Plan</button>
+      <a href="/login.html" class="price-btn">Start Ministry Plan</a>
     </div>
   </div>
-</section>
-
-
-<!-- FOOTER CTA / WAITLIST -->
-<section class="footer-cta" id="waitlist">
-  <h2>Be first in the pulpit.</h2>
-  <p>Join the waitlist and get founding member pricing — locked in forever.</p>
-  <form class="waitlist-form" id="waitlist-form" onsubmit="submitWaitlist(event)">
-    <input type="email" id="wl-email" class="waitlist-input" placeholder="your@email.com" required>
-    <button type="submit" class="btn-primary" id="wl-btn">Join Waitlist</button>
-  </form>
-  <div id="wl-success" style="display:none; text-align:center; margin-top:20px; color:var(--gold); font-weight:500;">
-    ✓ You're on the list! We'll email you when Sermon Scribe launches.
-  </div>
-  <div id="wl-error" style="display:none; text-align:center; margin-top:12px; color:#c53030; font-size:0.9rem;"></div>
 </section>
 
 <div class="footer-bottom">
   © 2026 Sermon Scribe · Built for those who preach the Word
 </div>
-
-<script>
-const SUPABASE_URL = 'https://japlrtlpopefvgkecpif.supabase.co';
-const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImphcGxydGxwb3BlZnZna2VjcGlmIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzE3Njc1NTcsImV4cCI6MjA4NzM0MzU1N30.q0JVwQJdJcpNUcyt2opxE-yRlhBnWdO3oq4IUMk6L5M';
-
-async function submitWaitlist(e) {
-  e.preventDefault();
-  const btn = document.getElementById('wl-btn');
-  const errEl = document.getElementById('wl-error');
-  const successEl = document.getElementById('wl-success');
-  const email = document.getElementById('wl-email').value.trim();
-
-  errEl.style.display = 'none';
-  successEl.style.display = 'none';
-  btn.disabled = true;
-  btn.textContent = 'Joining...';
-
-  try {
-    const res = await fetch(SUPABASE_URL + '/rest/v1/waitlist', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'apikey': SUPABASE_KEY,
-        'Authorization': 'Bearer ' + SUPABASE_KEY,
-        'Prefer': 'return=minimal'
-      },
-      body: JSON.stringify({ 
-        email: email, 
-        name: '', 
-        role: 'pastor' 
-      })
-    });
-
-    if (res.status === 201 || res.status === 200 || res.status === 409) {
-      // Send confirmation email
-      fetch(SUPABASE_URL + '/functions/v1/send-sermon-waitlist-email', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'apikey': SUPABASE_KEY,
-          'Authorization': 'Bearer ' + SUPABASE_KEY
-        },
-        body: JSON.stringify({ email: email })
-      }).catch(err => console.warn('Email send failed:', err));
-      
-      document.getElementById('waitlist-form').style.display = 'none';
-      successEl.style.display = 'block';
-    } else {
-      throw new Error('Server error ' + res.status);
-    }
-  } catch (err) {
-    errEl.textContent = 'Something went wrong. Please try again.';
-    errEl.style.display = 'block';
-    btn.disabled = false;
-    btn.textContent = 'Join Waitlist';
-    console.error(err);
-  }
-}
-</script>
 
 </body>
 </html>
