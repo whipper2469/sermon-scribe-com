@@ -402,7 +402,7 @@
 
     // If already logged in, redirect to app
     sb.auth.getSession().then(({ data }) => {
-      if (data.session) window.location.href = '/app.html';
+      if (data.session) window.location.href = "/dashboard.html";
     });
 
     function switchTab(tab) {
@@ -441,7 +441,7 @@
       } else {
         successEl.textContent = '✓ Signed in! Redirecting...';
         successEl.classList.add('show');
-        setTimeout(() => window.location.href = '/app.html', 800);
+        setTimeout(() => window.location.href = "/dashboard.html";
       }
     }
 
