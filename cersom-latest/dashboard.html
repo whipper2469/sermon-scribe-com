@@ -1,0 +1,682 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Welcome — Sermon Scribe</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <style>
+    :root {
+      --gold: #c9912a;
+      --gold-dark: #a67823;
+      --gold-light: #e8c97a;
+      --cream: #fdfaf4;
+      --parchment: #f5f0e8;
+      --dark: #1a1208;
+      --gray: #7a6e5f;
+      --border: rgba(201,145,42,0.2);
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'DM Sans', sans-serif;
+      background: var(--cream);
+      color: var(--dark);
+      line-height: 1.6;
+    }
+
+    #auth-gate {
+      display: flex; align-items: center; justify-content: center;
+      min-height: 100vh; font-size: 15px; color: var(--gray);
+    }
+
+    #page-content { display: none; }
+
+    /* HEADER */
+    header {
+      background: white;
+      border-bottom: 1px solid var(--border);
+      padding: 14px 0;
+      position: sticky; top: 0; z-index: 100;
+    }
+
+    .header-inner {
+      max-width: 1200px; margin: 0 auto; padding: 0 24px;
+      display: flex; justify-content: space-between; align-items: center;
+    }
+
+    .logo { font-family: 'Playfair Display', serif; font-size: 22px; font-weight: 700; color: var(--dark); text-decoration: none; }
+    .logo span { color: var(--gold); }
+
+    .header-right { display: flex; align-items: center; gap: 12px; }
+    .user-greeting { font-size: 13px; color: var(--gray); }
+
+    .btn-app {
+      padding: 9px 20px;
+      background: var(--gold);
+      color: white; border: none;
+      border-radius: 7px;
+      font-family: inherit; font-size: 14px; font-weight: 600;
+      cursor: pointer; text-decoration: none;
+      transition: background 0.2s;
+    }
+    .btn-app:hover { background: var(--gold-dark); }
+
+    .btn-ghost-sm {
+      padding: 8px 16px;
+      background: transparent;
+      border: 1px solid var(--border);
+      border-radius: 7px;
+      font-family: inherit; font-size: 13px;
+      color: var(--gray); cursor: pointer;
+      transition: all 0.2s; text-decoration: none;
+    }
+    .btn-ghost-sm:hover { border-color: var(--gold); color: var(--gold); }
+
+    /* HERO */
+    .hero {
+      background: var(--dark);
+      padding: 80px 24px 70px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero::before {
+      content: '';
+      position: absolute; inset: 0;
+      background: radial-gradient(ellipse 70% 60% at 50% 0%, rgba(201,145,42,0.18) 0%, transparent 65%);
+      pointer-events: none;
+    }
+
+    .hero::after {
+      content: '';
+      position: absolute; inset: 0;
+      background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%23c9912a' fill-opacity='0.04'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/svg%3E");
+      pointer-events: none;
+    }
+
+    .hero-inner { position: relative; z-index: 1; max-width: 760px; margin: 0 auto; }
+
+    .hero-welcome {
+      font-size: 12px; letter-spacing: 0.2em; text-transform: uppercase;
+      color: var(--gold-light); font-weight: 500; margin-bottom: 20px;
+      opacity: 0; animation: fadeUp 0.7s 0.1s forwards;
+    }
+
+    .hero-name {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(2.2rem, 5vw, 3.8rem);
+      font-weight: 900; color: white; line-height: 1.08;
+      margin-bottom: 20px;
+      opacity: 0; animation: fadeUp 0.7s 0.25s forwards;
+    }
+
+    .hero-name em { font-style: italic; color: var(--gold-light); }
+
+    .hero-sub {
+      font-size: 1.05rem; color: rgba(255,255,255,0.55);
+      max-width: 540px; margin: 0 auto 36px;
+      line-height: 1.75;
+      opacity: 0; animation: fadeUp 0.7s 0.4s forwards;
+    }
+
+    .hero-cta {
+      display: flex; gap: 14px; justify-content: center; flex-wrap: wrap;
+      opacity: 0; animation: fadeUp 0.7s 0.55s forwards;
+    }
+
+    .btn-hero-primary {
+      padding: 13px 32px;
+      background: var(--gold); color: white;
+      border: none; border-radius: 8px;
+      font-family: inherit; font-size: 15px; font-weight: 600;
+      cursor: pointer; text-decoration: none;
+      transition: background 0.2s, transform 0.15s;
+    }
+    .btn-hero-primary:hover { background: var(--gold-dark); transform: translateY(-1px); }
+
+    .btn-hero-ghost {
+      padding: 13px 32px;
+      background: transparent; color: rgba(255,255,255,0.7);
+      border: 1.5px solid rgba(255,255,255,0.2);
+      border-radius: 8px;
+      font-family: inherit; font-size: 15px; font-weight: 400;
+      cursor: pointer; text-decoration: none;
+      transition: border-color 0.2s, color 0.2s;
+    }
+    .btn-hero-ghost:hover { border-color: var(--gold-light); color: var(--gold-light); }
+
+    /* STATS BAR */
+    .stats-bar {
+      background: white;
+      border-bottom: 1px solid var(--border);
+      padding: 20px 24px;
+    }
+
+    .stats-inner {
+      max-width: 1200px; margin: 0 auto;
+      display: flex; justify-content: center; gap: 60px; flex-wrap: wrap;
+    }
+
+    .stat { text-align: center; }
+    .stat-num { font-family: 'Playfair Display', serif; font-size: 1.8rem; font-weight: 900; color: var(--gold); }
+    .stat-label { font-size: 12px; color: var(--gray); letter-spacing: 0.05em; }
+
+    /* SECTIONS */
+    .section { padding: 72px 24px; max-width: 1200px; margin: 0 auto; }
+    .section-sm { padding: 48px 24px; max-width: 1200px; margin: 0 auto; }
+
+    .section-eyebrow { font-size: 11px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--gold); font-weight: 600; margin-bottom: 12px; text-align: center; }
+    .section-title { font-family: 'Playfair Display', serif; font-size: clamp(1.8rem, 3.5vw, 2.6rem); font-weight: 700; text-align: center; margin-bottom: 12px; line-height: 1.2; }
+    .section-sub { text-align: center; color: var(--gray); font-size: 0.95rem; max-width: 500px; margin: 0 auto 48px; line-height: 1.75; }
+
+    /* HOW IT WORKS */
+    .steps { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 24px; }
+
+    .step-card {
+      background: white;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 28px 24px;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .step-card:hover { transform: translateY(-3px); box-shadow: 0 8px 32px rgba(201,145,42,0.1); }
+
+    .step-num { font-family: 'Playfair Display', serif; font-size: 3.5rem; font-weight: 900; color: rgba(201,145,42,0.15); line-height: 1; margin-bottom: 14px; }
+    .step-card h3 { font-family: 'Playfair Display', serif; font-size: 1.15rem; font-weight: 700; margin-bottom: 8px; }
+    .step-card p { color: var(--gray); font-size: 0.88rem; line-height: 1.7; }
+
+    /* FEATURES */
+    .features { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 18px; }
+
+    .feature-card {
+      background: white;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 26px;
+      transition: border-color 0.2s;
+    }
+    .feature-card:hover { border-color: var(--gold); }
+
+    .feature-icon { font-size: 1.8rem; margin-bottom: 14px; }
+    .feature-card h3 { font-family: 'Playfair Display', serif; font-size: 1.05rem; font-weight: 700; margin-bottom: 8px; }
+    .feature-card p { color: var(--gray); font-size: 0.86rem; line-height: 1.7; }
+
+    /* SAMPLE SERMON */
+    .sample-sermon {
+      background: var(--dark);
+      border-radius: 16px;
+      padding: 48px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .sample-sermon::before {
+      content: '';
+      position: absolute; inset: 0;
+      background: radial-gradient(ellipse 60% 50% at 80% 50%, rgba(201,145,42,0.12) 0%, transparent 70%);
+      pointer-events: none;
+    }
+
+    .sample-tag {
+      display: inline-block;
+      background: rgba(201,145,42,0.2);
+      color: var(--gold-light);
+      font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; font-weight: 600;
+      padding: 5px 14px; border-radius: 99px; margin-bottom: 20px;
+    }
+
+    .sample-title { font-family: 'Playfair Display', serif; font-size: 1.8rem; font-weight: 900; color: white; margin-bottom: 8px; }
+    .sample-meta { font-size: 13px; color: rgba(255,255,255,0.4); margin-bottom: 28px; }
+
+    .sample-body { color: rgba(255,255,255,0.75); font-size: 0.9rem; line-height: 1.85; }
+    .sample-body h4 { color: var(--gold-light); font-family: 'Playfair Display', serif; font-size: 1.1rem; margin: 20px 0 8px; }
+
+    .sample-cta {
+      margin-top: 32px;
+      padding-top: 24px;
+      border-top: 1px solid rgba(201,145,42,0.2);
+      display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 16px;
+    }
+
+    .sample-cta p { color: rgba(255,255,255,0.45); font-size: 13px; }
+
+    /* TESTIMONIALS */
+    .testimonials { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; }
+
+    .testimonial {
+      background: white;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 28px;
+    }
+
+    .stars { color: var(--gold); font-size: 14px; margin-bottom: 14px; letter-spacing: 2px; }
+
+    .testimonial-text { font-family: 'Playfair Display', serif; font-style: italic; font-size: 1rem; line-height: 1.7; color: var(--dark); margin-bottom: 20px; }
+
+    .testimonial-author { display: flex; align-items: center; gap: 12px; }
+
+    .author-avatar {
+      width: 40px; height: 40px; border-radius: 50%;
+      background: var(--parchment);
+      border: 2px solid var(--border);
+      display: flex; align-items: center; justify-content: center;
+      font-family: 'Playfair Display', serif;
+      font-size: 1rem; font-weight: 700; color: var(--gold);
+      flex-shrink: 0;
+    }
+
+    .author-name { font-size: 14px; font-weight: 600; }
+    .author-role { font-size: 12px; color: var(--gray); }
+
+    /* UPGRADE CTA — only shown to free users */
+    .upgrade-section {
+      background: var(--dark);
+      padding: 72px 24px;
+      text-align: center;
+    }
+
+    .upgrade-inner { max-width: 700px; margin: 0 auto; }
+
+    .upgrade-eyebrow { font-size: 11px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--gold-light); font-weight: 600; margin-bottom: 16px; }
+
+    .upgrade-title { font-family: 'Playfair Display', serif; font-size: clamp(1.8rem, 3.5vw, 2.8rem); font-weight: 900; color: white; line-height: 1.1; margin-bottom: 16px; }
+    .upgrade-title em { font-style: italic; color: var(--gold-light); }
+
+    .upgrade-sub { color: rgba(255,255,255,0.5); font-size: 1rem; line-height: 1.75; margin-bottom: 36px; max-width: 520px; margin-left: auto; margin-right: auto; }
+
+    .upgrade-perks {
+      display: flex; flex-wrap: wrap; justify-content: center; gap: 12px;
+      margin-bottom: 36px;
+    }
+
+    .perk {
+      background: rgba(255,255,255,0.06);
+      border: 1px solid rgba(201,145,42,0.2);
+      border-radius: 99px;
+      padding: 8px 18px;
+      font-size: 13px; color: rgba(255,255,255,0.75);
+      display: flex; align-items: center; gap: 7px;
+    }
+    .perk::before { content: '✓'; color: var(--gold); font-weight: 700; }
+
+    .upgrade-price { font-family: 'Playfair Display', serif; font-size: 3rem; font-weight: 900; color: white; margin-bottom: 6px; }
+    .upgrade-price span { font-size: 1rem; color: rgba(255,255,255,0.4); font-family: 'DM Sans', sans-serif; font-weight: 400; }
+
+    .upgrade-note { font-size: 12px; color: rgba(255,255,255,0.3); margin-bottom: 28px; }
+
+    .btn-upgrade-big {
+      padding: 16px 48px;
+      background: var(--gold); color: white;
+      border: none; border-radius: 8px;
+      font-family: inherit; font-size: 16px; font-weight: 700;
+      cursor: pointer; text-decoration: none;
+      transition: background 0.2s, transform 0.15s;
+      display: inline-block;
+    }
+    .btn-upgrade-big:hover { background: var(--gold-dark); transform: translateY(-1px); }
+
+    .upgrade-trust { margin-top: 20px; font-size: 12px; color: rgba(255,255,255,0.25); }
+
+    /* FOOTER */
+    footer {
+      background: white;
+      border-top: 1px solid var(--border);
+      padding: 24px;
+      text-align: center;
+      font-size: 13px;
+      color: var(--gray);
+    }
+
+    footer a { color: var(--gold); text-decoration: none; }
+
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(18px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @media (max-width: 640px) {
+      .stats-inner { gap: 32px; }
+      .sample-sermon { padding: 28px 20px; }
+      .hero { padding: 60px 20px 50px; }
+    }
+  </style>
+</head>
+<body>
+
+<div id="auth-gate">Loading your dashboard...</div>
+
+<div id="page-content">
+
+  <header>
+    <div class="header-inner">
+      <a href="/dashboard.html" class="logo">Sermon<span>Scribe</span></a>
+      <div class="header-right">
+        <span class="user-greeting" id="user-greeting"></span>
+        <a href="/app.html" class="btn-app">Open Generator →</a>
+        <button class="btn-ghost-sm" onclick="handleSignOut()">Sign Out</button>
+      </div>
+    </div>
+  </header>
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="hero-inner">
+      <p class="hero-welcome" id="hero-eyebrow">Welcome back</p>
+      <h1 class="hero-name">Your next sermon is<br><em>one click away.</em></h1>
+      <p class="hero-sub">Sermon Scribe uses AI to help pastors and ministry leaders craft full, scripture-grounded sermons in minutes — so you can spend more time with your congregation and less time staring at a blank page.</p>
+      <div class="hero-cta">
+        <a href="/app.html" class="btn-hero-primary">Create a Sermon Now</a>
+        <a href="#how-it-works" class="btn-hero-ghost">See How It Works</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- STATS -->
+  <div class="stats-bar">
+    <div class="stats-inner">
+      <div class="stat">
+        <div class="stat-num">2,400+</div>
+        <div class="stat-label">Sermons Generated</div>
+      </div>
+      <div class="stat">
+        <div class="stat-num">340+</div>
+        <div class="stat-label">Pastors Using Scribe</div>
+      </div>
+      <div class="stat">
+        <div class="stat-num">8 min</div>
+        <div class="stat-label">Average Generation Time</div>
+      </div>
+      <div class="stat">
+        <div class="stat-num">4.9 ★</div>
+        <div class="stat-label">Average Rating</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- HOW IT WORKS -->
+  <div class="section" id="how-it-works">
+    <p class="section-eyebrow">Simple Process</p>
+    <h2 class="section-title">From passage to pulpit in minutes</h2>
+    <p class="section-sub">Four steps is all it takes to go from a scripture reference to a full, preachable sermon.</p>
+
+    <div class="steps">
+      <div class="step-card">
+        <div class="step-num">01</div>
+        <h3>Enter Your Scripture</h3>
+        <p>Type your passage or topic. Add a theme, a tone, and any illustrations you already have in mind.</p>
+      </div>
+      <div class="step-card">
+        <div class="step-num">02</div>
+        <h3>Choose Your Style</h3>
+        <p>Select your tone — encouraging, challenging, teaching, evangelistic, or pastoral. Set your sermon length from 10 to 40 minutes.</p>
+      </div>
+      <div class="step-card">
+        <div class="step-num">03</div>
+        <h3>Generate in Seconds</h3>
+        <p>Sermon Scribe writes a full, structured sermon with introduction, 3 main points, illustrations, and a closing call to action.</p>
+      </div>
+      <div class="step-card">
+        <div class="step-num">04</div>
+        <h3>Preach with Confidence</h3>
+        <p>Copy, edit, or regenerate. Save to your history. Schedule upcoming sermons. Your entire library, always at hand.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- SAMPLE SERMON -->
+  <div class="section-sm">
+    <p class="section-eyebrow">See It In Action</p>
+    <h2 class="section-title">A real sermon, generated in 47 seconds</h2>
+    <p class="section-sub">Here's an actual output from Sermon Scribe — unedited, ready to preach.</p>
+
+    <div class="sample-sermon">
+      <div class="sample-tag">Live Example · James 1:2-4 · Encouraging · 20 min</div>
+      <div class="sample-title">The Gift Hidden Inside Your Struggle</div>
+      <div class="sample-meta">James 1:2-4 · Encouraging · Generated in 47 seconds</div>
+
+      <div class="sample-body">
+        <h4>Introduction</h4>
+        <p>Have you ever been in the middle of something hard and found yourself asking God, "Why is this happening to me?" James, writing to scattered believers facing real persecution, doesn't open with sympathy — he opens with something that sounds almost offensive: "Consider it pure joy, my brothers and sisters, whenever you face trials of many kinds." Joy? In trials? That's either naive or it's one of the most profound truths in all of Scripture...</p>
+
+        <h4>Point 1 — Trials Test What We're Made Of</h4>
+        <p>James says the testing of your faith produces perseverance. Not comfort. Not immediate relief. Perseverance. The Greek word is <em>hypomonē</em> — a word that means staying under pressure rather than running from it. It's not passive resignation; it's active endurance. Think of gold refining: the fire doesn't destroy the gold — it reveals it...</p>
+
+        <h4>Point 2 — Perseverance Has a Destination</h4>
+        <p>Verse 4 tells us perseverance must "finish its work" so that we may be "mature and complete, not lacking anything." God isn't randomly allowing hardship — he's shaping something. Like a sculptor who sees the finished form inside the rough stone, God sees who you're becoming even when you can only feel the chisel...</p>
+
+        <h4>Closing Call to Action</h4>
+        <p>What trial are you in right now? What if, instead of asking God to remove it, you asked Him to reveal what He's building in you through it? The same fire that hardens clay also refines gold. Which one are you becoming?</p>
+      </div>
+
+      <div class="sample-cta">
+        <p>✓ Generated from: "Faith in Difficult Times" + James 1:2-4 + Encouraging tone</p>
+        <a href="/app.html" class="btn-hero-primary">Generate Your Sermon →</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- FEATURES -->
+  <div class="section">
+    <p class="section-eyebrow">What's Included</p>
+    <h2 class="section-title">Everything a preacher needs</h2>
+    <p class="section-sub">Built specifically for ministry — not a generic AI tool retrofitted for pastors.</p>
+
+    <div class="features">
+      <div class="feature-card">
+        <div class="feature-icon">📖</div>
+        <h3>Scripture-First Structure</h3>
+        <p>Every sermon is built around the text. Cross-references and related passages are suggested automatically to deepen your preparation.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">🎯</div>
+        <h3>Tone & Style Control</h3>
+        <p>Encouraging, challenging, teaching, evangelistic, or pastoral — your voice, amplified. The output matches how you actually preach.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">💡</div>
+        <h3>Illustration Suggestions</h3>
+        <p>Each sermon includes stories, analogies, and cultural hooks tailored to the passage — the kind of illustrations your congregation will remember.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">📅</div>
+        <h3>Sermon Scheduler</h3>
+        <p>Plan your preaching calendar weeks in advance. Add dates, passages, and themes — then generate each sermon when you're ready.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">🗂️</div>
+        <h3>Full Sermon History</h3>
+        <p>Every sermon you generate is saved and searchable. Build a library of your preaching over time — never lose a message again.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">🔁</div>
+        <h3>Regenerate Anytime</h3>
+        <p>Not happy with a section? Regenerate with one click. Tweak the tone, change the length, try a different angle — until it's exactly right.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- TESTIMONIALS -->
+  <div class="section" style="background: var(--parchment); max-width: 100%; padding: 72px 24px;">
+    <div style="max-width: 1200px; margin: 0 auto;">
+      <p class="section-eyebrow">What Pastors Are Saying</p>
+      <h2 class="section-title">Trusted by ministry leaders across Canada</h2>
+      <p class="section-sub">From small rural churches to urban congregations — Sermon Scribe is changing how pastors prepare.</p>
+
+      <div class="testimonials">
+        <div class="testimonial">
+          <div class="stars">★★★★★</div>
+          <p class="testimonial-text">"I used to spend 12-15 hours on sermon prep every week. With Sermon Scribe, I have a solid draft in under an hour. The theological depth surprised me — this isn't just surface-level fluff."</p>
+          <div class="testimonial-author">
+            <div class="author-avatar">DR</div>
+            <div>
+              <div class="author-name">Pastor David R.</div>
+              <div class="author-role">Lead Pastor · Calvary Community Church, Kitchener ON</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="testimonial">
+          <div class="stars">★★★★★</div>
+          <p class="testimonial-text">"As a bivocational pastor working full-time and leading a congregation of 200, I simply don't have time for 15-hour prep weeks. Sermon Scribe has been a genuine answer to prayer."</p>
+          <div class="testimonial-author">
+            <div class="author-avatar">MJ</div>
+            <div>
+              <div class="author-name">Rev. Marcus J.</div>
+              <div class="author-role">Senior Pastor · Hope Fellowship, Hamilton ON</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="testimonial">
+          <div class="stars">★★★★★</div>
+          <p class="testimonial-text">"The illustration suggestions are what sold me. I always struggled to find fresh stories that connected the text to real life. Now they're just there, waiting for me."</p>
+          <div class="testimonial-author">
+            <div class="author-avatar">SP</div>
+            <div>
+              <div class="author-name">Pastor Sarah P.</div>
+              <div class="author-role">Youth & Young Adults Pastor · Riverside Church, Waterloo ON</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="testimonial">
+          <div class="stars">★★★★☆</div>
+          <p class="testimonial-text">"I was skeptical that AI could produce anything theologically sound. I was wrong. I still edit and make it my own, but the foundation it gives me is strong and scriptural."</p>
+          <div class="testimonial-author">
+            <div class="author-avatar">TK</div>
+            <div>
+              <div class="author-name">Pastor Thomas K.</div>
+              <div class="author-role">Associate Pastor · Grace Baptist, Cambridge ON</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="testimonial">
+          <div class="stars">★★★★★</div>
+          <p class="testimonial-text">"The scheduling feature means I plan my entire sermon series for the month on Sunday afternoon and generate each one as the week approaches. Total game changer for our team."</p>
+          <div class="testimonial-author">
+            <div class="author-avatar">AL</div>
+            <div>
+              <div class="author-name">Pastor Angela L.</div>
+              <div class="author-role">Lead Pastor · The Table Church, Guelph ON</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="testimonial">
+          <div class="stars">★★★★★</div>
+          <p class="testimonial-text">"My congregation has noticed the difference. My sermons are tighter, better structured, and the illustrations land harder. I'm a better preacher because of this tool."</p>
+          <div class="testimonial-author">
+            <div class="author-avatar">JM</div>
+            <div>
+              <div class="author-name">Pastor James M.</div>
+              <div class="author-role">Senior Pastor · Cornerstone Alliance, Burlington ON</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- UPGRADE CTA — only shown to free users -->
+  <div class="upgrade-section" id="upgrade-section" style="display:none;">
+    <div class="upgrade-inner">
+      <p class="upgrade-eyebrow">Unlock Everything</p>
+      <h2 class="upgrade-title">Stop limiting your<br><em>preparation.</em></h2>
+      <p class="upgrade-sub">The free plan gives you a taste. Pro gives you everything — unlimited sermons, full history, scheduling, and illustration suggestions. For less than a weekly coffee.</p>
+
+      <div class="upgrade-perks">
+        <div class="perk">Unlimited sermon generation</div>
+        <div class="perk">Full sermon history</div>
+        <div class="perk">Sermon scheduler</div>
+        <div class="perk">Illustration suggestions</div>
+        <div class="perk">Cross-reference lookup</div>
+        <div class="perk">Priority support</div>
+      </div>
+
+      <div class="upgrade-price">$19 <span>/ month</span></div>
+      <div class="upgrade-note">Paid securely via Interac e-Transfer · Cancel anytime</div>
+
+      <a href="/upgrade.html" class="btn-upgrade-big">Upgrade to Pro →</a>
+
+      <p class="upgrade-trust">🔒 Secure Canadian payment · No credit card required · Activate within 24 hours</p>
+    </div>
+  </div>
+
+  <!-- PRO WELCOME — only shown to pro users -->
+  <div id="pro-section" style="display:none; background: var(--parchment); padding: 60px 24px; text-align: center;">
+    <div style="max-width: 600px; margin: 0 auto;">
+      <div style="font-size: 2.5rem; margin-bottom: 16px;">✝️</div>
+      <h2 style="font-family: 'Playfair Display', serif; font-size: 1.8rem; font-weight: 700; margin-bottom: 12px;">You're a Pro member — thank you.</h2>
+      <p style="color: var(--gray); font-size: 1rem; line-height: 1.75; margin-bottom: 24px;">Your support keeps Sermon Scribe growing. You have full access to unlimited sermon generation, history, scheduling, and everything we add in the future.</p>
+      <a href="/app.html" class="btn-app" style="display:inline-block; padding: 13px 32px; font-size: 15px;">Open the Generator →</a>
+    </div>
+  </div>
+
+  <footer>
+    <p>© 2026 Sermon Scribe · <a href="/index.html">Home</a> · <a href="/upgrade.html">Pricing</a> · Built for those who preach the Word</p>
+  </footer>
+
+</div>
+
+<script>
+  const SUPABASE_URL = 'https://japlrtlpopefvgkecpif.supabase.co';
+  const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImphcGxydGxwb3BlZnZna2VjcGlmIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzE3Njc1NTcsImV4cCI6MjA4NzM0MzU1N30.q0JVwQJdJcpNUcyt2opxE-yRlhBnWdO3oq4IUMk6L5M';
+
+  const { createClient } = supabase;
+  const sb = createClient(SUPABASE_URL, SUPABASE_KEY);
+
+  sb.auth.getSession().then(async ({ data }) => {
+    if (!data.session) {
+      window.location.href = '/login.html';
+      return;
+    }
+
+    const user = data.session.user;
+    document.getElementById('auth-gate').style.display = 'none';
+    document.getElementById('page-content').style.display = 'block';
+
+    // Set greeting
+    const name = user.user_metadata?.full_name?.split(' ')[0] || user.email.split('@')[0];
+    document.getElementById('user-greeting').textContent = name;
+    document.getElementById('hero-eyebrow').textContent = 'Welcome back, ' + name;
+
+    // Check subscription status
+    try {
+      const res = await fetch(
+        SUPABASE_URL + '/rest/v1/subscriptions?user_id=eq.' + user.id + '&status=eq.active&limit=1',
+        {
+          headers: {
+            'apikey': SUPABASE_KEY,
+            'Authorization': 'Bearer ' + data.session.access_token
+          }
+        }
+      );
+      const subs = await res.json();
+      const isPro = subs && subs.length > 0;
+
+      if (isPro) {
+        document.getElementById('pro-section').style.display = 'block';
+      } else {
+        document.getElementById('upgrade-section').style.display = 'block';
+      }
+    } catch (e) {
+      // Default to showing upgrade section if check fails
+      document.getElementById('upgrade-section').style.display = 'block';
+    }
+  });
+
+  async function handleSignOut() {
+    await sb.auth.signOut();
+    window.location.href = '/login.html';
+  }
+</script>
+
+</body>
+</html>
