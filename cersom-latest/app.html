@@ -418,6 +418,7 @@
   <script>
     const SUPABASE_URL = 'https://japlrtlpopefvgkecpif.supabase.co';
     const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImphcGxydGxwb3BlZnZna2VjcGlmIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzE3Njc1NTcsImV4cCI6MjA4NzM0MzU1N30.q0JVwQJdJcpNUcyt2opxE-yRlhBnWdO3oq4IUMk6L5M';
+    const WORKER_URL = 'https://generate-sermon.kevinaroy.workers.dev';
 
     let sessionId = localStorage.getItem('sermon_session_id');
     if (!sessionId) {
@@ -451,10 +452,11 @@
       generateBtn.disabled = true;
 
       try {
-        // Call secure edge function
-        const response = await fetch('https://generate-sermon.kevinaroy.workers.dev', {
-          
-        },
+        const response = await fetch(WORKER_URL, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
           body: JSON.stringify(formData)
         });
 
