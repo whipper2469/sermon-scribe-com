@@ -25,7 +25,6 @@
       line-height: 1.6;
     }
 
-    /* Auth gate - show while checking session */
     #auth-gate {
       display: flex;
       align-items: center;
@@ -37,11 +36,7 @@
 
     #app-content { display: none; }
 
-    .container {
-      max-width: 1200px;
-      margin: 0 auto;
-      padding: 0 20px;
-    }
+    .container { max-width: 1200px; margin: 0 auto; padding: 0 20px; }
 
     header {
       background: white;
@@ -52,31 +47,11 @@
       z-index: 100;
     }
 
-    .header-content {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
-
-    .logo {
-      font-family: 'Playfair Display', serif;
-      font-size: 24px;
-      font-weight: 700;
-      color: var(--dark);
-    }
-
+    .header-content { display: flex; justify-content: space-between; align-items: center; }
+    .logo { font-family: 'Playfair Display', serif; font-size: 24px; font-weight: 700; color: var(--dark); }
     .logo span { color: var(--gold); }
-
-    .header-right {
-      display: flex;
-      align-items: center;
-      gap: 20px;
-    }
-
-    .user-email {
-      font-size: 13px;
-      color: var(--gray);
-    }
+    .header-right { display: flex; align-items: center; gap: 20px; }
+    .user-email { font-size: 13px; color: var(--gray); }
 
     .btn-signout {
       padding: 7px 16px;
@@ -89,15 +64,40 @@
       cursor: pointer;
       transition: all 0.2s;
     }
-
     .btn-signout:hover { border-color: var(--gold); color: var(--gold); }
+
+    .nav-tabs {
+      display: flex;
+      border-bottom: 1px solid var(--border);
+      background: white;
+      padding: 0 20px;
+    }
+
+    .nav-tab {
+      padding: 14px 24px;
+      font-size: 14px;
+      font-weight: 500;
+      color: var(--gray);
+      cursor: pointer;
+      border-bottom: 2px solid transparent;
+      margin-bottom: -1px;
+      transition: all 0.2s;
+      background: none;
+      border-top: none;
+      border-left: none;
+      border-right: none;
+      font-family: inherit;
+    }
+    .nav-tab.active { color: var(--gold); border-bottom-color: var(--gold); }
+    .nav-tab:hover { color: var(--dark); }
+
+    .page { display: none; padding: 30px 0; min-height: calc(100vh - 130px); }
+    .page.active { display: block; }
 
     .main-layout {
       display: grid;
       grid-template-columns: 350px 1fr;
       gap: 30px;
-      padding: 30px 0;
-      min-height: calc(100vh - 100px);
     }
 
     .sidebar {
@@ -106,26 +106,13 @@
       padding: 24px;
       height: fit-content;
       position: sticky;
-      top: 100px;
+      top: 130px;
       border: 1px solid var(--border);
     }
 
-    .sidebar h2 {
-      font-family: 'Playfair Display', serif;
-      font-size: 20px;
-      margin-bottom: 20px;
-      color: var(--dark);
-    }
-
+    .sidebar h2 { font-family: 'Playfair Display', serif; font-size: 20px; margin-bottom: 20px; }
     .form-group { margin-bottom: 20px; }
-
-    .form-group label {
-      display: block;
-      margin-bottom: 8px;
-      font-weight: 500;
-      color: var(--dark);
-      font-size: 14px;
-    }
+    .form-group label { display: block; margin-bottom: 8px; font-weight: 500; font-size: 14px; }
 
     .form-group input,
     .form-group textarea,
@@ -137,15 +124,11 @@
       font-family: inherit;
       font-size: 14px;
       transition: border-color 0.2s;
+      background: white;
     }
-
     .form-group input:focus,
     .form-group textarea:focus,
-    .form-group select:focus {
-      outline: none;
-      border-color: var(--gold);
-    }
-
+    .form-group select:focus { outline: none; border-color: var(--gold); }
     .form-group textarea { resize: vertical; min-height: 80px; }
 
     .btn {
@@ -161,7 +144,6 @@
       transition: background 0.2s;
       font-family: inherit;
     }
-
     .btn:hover { background: var(--gold-dark); }
     .btn:disabled { opacity: 0.6; cursor: not-allowed; }
 
@@ -173,22 +155,9 @@
       min-height: 600px;
     }
 
-    .empty-state {
-      text-align: center;
-      padding: 100px 40px;
-      color: var(--gray);
-    }
-
+    .empty-state { text-align: center; padding: 100px 40px; color: var(--gray); }
     .empty-state svg { width: 80px; height: 80px; margin-bottom: 20px; opacity: 0.3; }
-
-    .empty-state h3 {
-      font-family: 'Playfair Display', serif;
-      font-size: 24px;
-      margin-bottom: 12px;
-      color: var(--dark);
-    }
-
-    .empty-state p { font-size: 15px; }
+    .empty-state h3 { font-family: 'Playfair Display', serif; font-size: 24px; margin-bottom: 12px; color: var(--dark); }
 
     .sermon-output { display: none; }
     .sermon-output.active { display: block; }
@@ -202,17 +171,9 @@
       border-bottom: 1px solid var(--border);
     }
 
-    .sermon-title {
-      font-family: 'Playfair Display', serif;
-      font-size: 32px;
-      font-weight: 700;
-      color: var(--dark);
-      margin-bottom: 8px;
-    }
-
+    .sermon-title { font-family: 'Playfair Display', serif; font-size: 32px; font-weight: 700; margin-bottom: 8px; }
     .sermon-meta { color: var(--gray); font-size: 14px; }
-
-    .sermon-actions { display: flex; gap: 12px; }
+    .sermon-actions { display: flex; gap: 12px; flex-shrink: 0; }
 
     .btn-sm {
       padding: 8px 16px;
@@ -226,10 +187,9 @@
       font-weight: 500;
       font-family: inherit;
     }
-
     .btn-sm:hover { border-color: var(--gold); color: var(--gold); }
 
-    .sermon-content { font-size: 16px; line-height: 1.8; color: var(--dark); }
+    .sermon-content { font-size: 16px; line-height: 1.8; }
     .sermon-content h2 { font-family: 'Playfair Display', serif; font-size: 24px; margin: 30px 0 16px; }
     .sermon-content h3 { font-size: 18px; margin: 24px 0 12px; }
     .sermon-content p { margin-bottom: 16px; }
@@ -242,58 +202,210 @@
     .loading-spinner {
       width: 50px;
       height: 50px;
-      border: 4px solid rgba(201, 145, 42, 0.2);
+      border: 4px solid rgba(201,145,42,0.2);
       border-top-color: var(--gold);
       border-radius: 50%;
       animation: spin 1s linear infinite;
       margin: 0 auto 20px;
     }
-
     @keyframes spin { to { transform: rotate(360deg); } }
-
     .loading p { color: var(--gray); font-size: 15px; }
+
+    /* HISTORY */
+    .page-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px; }
+    .page-title { font-family: 'Playfair Display', serif; font-size: 28px; font-weight: 700; }
+
+    .search-bar {
+      width: 100%;
+      padding: 12px 16px;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      font-family: inherit;
+      font-size: 14px;
+      margin-bottom: 20px;
+      background: white;
+    }
+    .search-bar:focus { outline: none; border-color: var(--gold); }
+
+    .history-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+      gap: 16px;
+    }
+
+    .sermon-card {
+      background: white;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 20px;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .sermon-card:hover { border-color: var(--gold); box-shadow: 0 4px 16px rgba(201,145,42,0.1); }
+
+    .sermon-card-title { font-family: 'Playfair Display', serif; font-size: 18px; font-weight: 700; margin-bottom: 6px; }
+    .sermon-card-meta { font-size: 13px; color: var(--gray); margin-bottom: 12px; display: flex; gap: 12px; flex-wrap: wrap; align-items: center; }
+    .sermon-card-badge {
+      display: inline-block;
+      padding: 2px 10px;
+      background: rgba(201,145,42,0.1);
+      color: var(--gold-dark);
+      border-radius: 99px;
+      font-size: 12px;
+      font-weight: 500;
+    }
+    .sermon-card-preview { font-size: 13px; color: var(--gray); line-height: 1.6; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
+    .history-empty { text-align: center; padding: 80px 20px; color: var(--gray); grid-column: 1/-1; }
+    .history-empty h3 { font-family: 'Playfair Display', serif; font-size: 22px; margin-bottom: 8px; color: var(--dark); }
+
+    /* MODAL */
+    .modal-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.5);
+      z-index: 200;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+    .modal-overlay.active { display: flex; }
+
+    .modal {
+      background: white;
+      border-radius: 16px;
+      padding: 40px;
+      max-width: 800px;
+      width: 100%;
+      max-height: 85vh;
+      overflow-y: auto;
+    }
+
+    .modal-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 24px;
+      padding-bottom: 20px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .modal-close {
+      background: none;
+      border: none;
+      font-size: 28px;
+      cursor: pointer;
+      color: var(--gray);
+      padding: 0;
+      line-height: 1;
+      flex-shrink: 0;
+      margin-left: 16px;
+    }
+    .modal-close:hover { color: var(--dark); }
+
+    /* SCHEDULE */
+    .add-schedule-form {
+      background: white;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 24px;
+      margin-bottom: 24px;
+    }
+    .add-schedule-form h3 { font-family: 'Playfair Display', serif; font-size: 18px; margin-bottom: 16px; }
+
+    .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+
+    .btn-gold {
+      padding: 10px 20px;
+      background: var(--gold);
+      border: none;
+      border-radius: 8px;
+      color: white;
+      font-family: inherit;
+      font-size: 14px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+    .btn-gold:hover { background: var(--gold-dark); }
+
+    .schedule-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 16px;
+    }
+
+    .schedule-card {
+      background: white;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 20px;
+      transition: all 0.2s;
+    }
+    .schedule-card:hover { border-color: var(--gold); }
+
+    .schedule-date {
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 8px;
+    }
+    .schedule-title { font-family: 'Playfair Display', serif; font-size: 18px; font-weight: 700; margin-bottom: 6px; }
+    .schedule-meta { font-size: 13px; color: var(--gray); margin-bottom: 12px; }
+
+    .schedule-empty { text-align: center; padding: 60px 20px; color: var(--gray); grid-column: 1/-1; }
+    .schedule-empty h3 { font-family: 'Playfair Display', serif; font-size: 22px; margin-bottom: 8px; color: var(--dark); }
 
     @media (max-width: 900px) {
       .main-layout { grid-template-columns: 1fr; }
       .sidebar { position: static; }
+      .form-row { grid-template-columns: 1fr; }
     }
   </style>
 </head>
 <body>
 
-  <!-- Auth checking spinner -->
-  <div id="auth-gate">Checking session...</div>
+<div id="auth-gate">Checking session...</div>
 
-  <!-- Main app (hidden until auth confirmed) -->
-  <div id="app-content">
-    <header>
-      <div class="container">
-        <div class="header-content">
-          <div class="logo">Sermon<span>Scribe</span></div>
-          <div class="header-right">
-            <span class="user-email" id="user-email"></span>
-            <button class="btn-signout" onclick="handleSignOut()">Sign Out</button>
-          </div>
+<div id="app-content">
+  <header>
+    <div class="container">
+      <div class="header-content">
+        <div class="logo">Sermon<span>Scribe</span></div>
+        <div class="header-right">
+          <span class="user-email" id="user-email"></span>
+          <button class="btn-signout" onclick="handleSignOut()">Sign Out</button>
         </div>
       </div>
-    </header>
+    </div>
+  </header>
 
-    <div class="container">
+  <div class="nav-tabs">
+    <button class="nav-tab active" id="tab-generator" onclick="showPage('generator', this)">Generator</button>
+    <button class="nav-tab" id="tab-history" onclick="showPage('history', this)">History</button>
+    <button class="nav-tab" id="tab-schedule" onclick="showPage('schedule', this)">Schedule</button>
+  </div>
+
+  <div class="container">
+
+    <!-- GENERATOR -->
+    <div class="page active" id="page-generator">
       <div class="main-layout">
-        
         <aside class="sidebar">
           <h2>New Sermon</h2>
           <form id="sermon-form">
             <div class="form-group">
-              <label for="topic">Topic or Theme</label>
+              <label>Topic or Theme</label>
               <input type="text" id="topic" placeholder="e.g., Faith in Difficult Times" required>
             </div>
             <div class="form-group">
-              <label for="scripture">Scripture Reference</label>
+              <label>Scripture Reference</label>
               <input type="text" id="scripture" placeholder="e.g., James 1:2-4">
             </div>
             <div class="form-group">
-              <label for="tone">Tone</label>
+              <label>Tone</label>
               <select id="tone">
                 <option value="encouraging">Encouraging</option>
                 <option value="challenging">Challenging</option>
@@ -303,7 +415,7 @@
               </select>
             </div>
             <div class="form-group">
-              <label for="length">Sermon Length</label>
+              <label>Sermon Length</label>
               <select id="length">
                 <option value="10">10 minutes</option>
                 <option value="15">15 minutes</option>
@@ -313,7 +425,7 @@
               </select>
             </div>
             <div class="form-group">
-              <label for="notes">Additional Notes</label>
+              <label>Additional Notes</label>
               <textarea id="notes" placeholder="Any specific points or illustrations..."></textarea>
             </div>
             <button type="submit" class="btn" id="generate-btn">Generate Sermon</button>
@@ -343,136 +455,332 @@
               </div>
               <div class="sermon-actions">
                 <button class="btn-sm" id="copy-btn">Copy</button>
-                <button class="btn-sm" id="save-btn">Save</button>
                 <button class="btn-sm" id="regenerate-btn">Regenerate</button>
               </div>
             </div>
             <div class="sermon-content" id="sermon-content"></div>
           </div>
         </main>
-
       </div>
     </div>
+
+    <!-- HISTORY -->
+    <div class="page" id="page-history">
+      <div class="page-header">
+        <h1 class="page-title">Sermon History</h1>
+      </div>
+      <input type="text" class="search-bar" id="history-search" placeholder="Search by topic, scripture, or content..." oninput="filterHistory()">
+      <div class="history-grid" id="history-grid">
+        <div class="history-empty"><h3>Loading...</h3></div>
+      </div>
+    </div>
+
+    <!-- SCHEDULE -->
+    <div class="page" id="page-schedule">
+      <div class="page-header">
+        <h1 class="page-title">Sermon Schedule</h1>
+      </div>
+
+      <div class="add-schedule-form">
+        <h3>Add to Schedule</h3>
+        <div class="form-row">
+          <div class="form-group">
+            <label>Date</label>
+            <input type="date" id="schedule-date">
+          </div>
+          <div class="form-group">
+            <label>Topic or Title</label>
+            <input type="text" id="schedule-topic" placeholder="e.g., The Good Shepherd">
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label>Scripture</label>
+            <input type="text" id="schedule-scripture" placeholder="e.g., Psalm 23">
+          </div>
+          <div class="form-group">
+            <label>Notes</label>
+            <input type="text" id="schedule-notes" placeholder="e.g., Easter Sunday">
+          </div>
+        </div>
+        <button class="btn-gold" style="margin-top:8px" onclick="addScheduleItem()">Add to Schedule</button>
+      </div>
+
+      <div class="schedule-grid" id="schedule-grid"></div>
+    </div>
+
   </div>
+</div>
 
-  <script>
-    const SUPABASE_URL = 'https://japlrtlpopefvgkecpif.supabase.co';
-    const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImphcGxydGxwb3BlZnZna2VjcGlmIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzE3Njc1NTcsImV4cCI6MjA4NzM0MzU1N30.q0JVwQJdJcpNUcyt2opxE-yRlhBnWdO3oq4IUMk6L5M';
-    const WORKER_URL = 'https://generate-sermon.kevinaroy.workers.dev';
+<!-- MODAL -->
+<div class="modal-overlay" id="sermon-modal">
+  <div class="modal">
+    <div class="modal-header">
+      <div>
+        <h2 class="sermon-title" id="modal-title"></h2>
+        <div class="sermon-meta" id="modal-meta"></div>
+      </div>
+      <button class="modal-close" onclick="closeModal()">×</button>
+    </div>
+    <div style="display:flex; gap:12px; margin-bottom:24px;">
+      <button class="btn-sm" onclick="copyModalSermon()">Copy Text</button>
+      <button class="btn-sm" onclick="deleteSermon()" style="color:#c53030; border-color:#fed7d7;">Delete</button>
+    </div>
+    <div class="sermon-content" id="modal-content"></div>
+  </div>
+</div>
 
-    const { createClient } = supabase;
-    const sb = createClient(SUPABASE_URL, SUPABASE_KEY);
+<script>
+  const SUPABASE_URL = 'https://japlrtlpopefvgkecpif.supabase.co';
+  const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImphcGxydGxwb3BlZnZna2VjcGlmIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzE3Njc1NTcsImV4cCI6MjA4NzM0MzU1N30.q0JVwQJdJcpNUcyt2opxE-yRlhBnWdO3oq4IUMk6L5M';
+  const WORKER_URL = 'https://generate-sermon.kevinaroy.workers.dev';
 
-    // Auth gate - redirect to login if not signed in
-    sb.auth.getSession().then(({ data }) => {
-      if (!data.session) {
-        window.location.href = '/login.html';
-      } else {
-        document.getElementById('auth-gate').style.display = 'none';
-        document.getElementById('app-content').style.display = 'block';
-        document.getElementById('user-email').textContent = data.session.user.email;
-      }
-    });
+  const { createClient } = supabase;
+  const sb = createClient(SUPABASE_URL, SUPABASE_KEY);
 
-    async function handleSignOut() {
-      await sb.auth.signOut();
+  let currentUser = null;
+  let allSermons = [];
+  let currentModalSermonId = null;
+  let scheduleItems = [];
+
+  sb.auth.getSession().then(({ data }) => {
+    if (!data.session) {
       window.location.href = '/login.html';
+    } else {
+      currentUser = data.session.user;
+      document.getElementById('auth-gate').style.display = 'none';
+      document.getElementById('app-content').style.display = 'block';
+      document.getElementById('user-email').textContent = currentUser.email;
+      loadSchedule();
     }
+  });
 
-    const form = document.getElementById('sermon-form');
-    const generateBtn = document.getElementById('generate-btn');
-    const emptyState = document.getElementById('empty-state');
-    const loadingState = document.getElementById('loading-state');
-    const sermonOutput = document.getElementById('sermon-output');
+  async function handleSignOut() {
+    await sb.auth.signOut();
+    window.location.href = '/login.html';
+  }
 
-    form.addEventListener('submit', async (e) => {
-      e.preventDefault();
-      await generateSermon();
+  function showPage(page, tabEl) {
+    document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+    document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
+    document.getElementById('page-' + page).classList.add('active');
+    tabEl.classList.add('active');
+    if (page === 'history') loadHistory();
+    if (page === 'schedule') renderSchedule();
+  }
+
+  // GENERATOR
+  document.getElementById('sermon-form').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    await generateSermon();
+  });
+
+  async function generateSermon() {
+    const formData = {
+      topic: document.getElementById('topic').value,
+      scripture: document.getElementById('scripture').value,
+      tone: document.getElementById('tone').value,
+      length: document.getElementById('length').value,
+      notes: document.getElementById('notes').value
+    };
+
+    document.getElementById('empty-state').style.display = 'none';
+    document.getElementById('sermon-output').classList.remove('active');
+    document.getElementById('loading-state').classList.add('active');
+    document.getElementById('generate-btn').disabled = true;
+
+    try {
+      const response = await fetch(WORKER_URL, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(formData)
+      });
+
+      const rawBody = await response.text();
+      let data;
+      try { data = JSON.parse(rawBody); }
+      catch { throw new Error(`Non-JSON response: ${rawBody.slice(0, 200)}`); }
+
+      if (!response.ok) throw new Error(data.error || 'Failed to generate');
+
+      const sermonText = data.text || data.content?.[0]?.text;
+      if (!sermonText) throw new Error('No sermon text returned.');
+
+      const { data: { session } } = await sb.auth.getSession();
+      await fetch(SUPABASE_URL + '/rest/v1/sermons', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'apikey': SUPABASE_KEY,
+          'Authorization': 'Bearer ' + session.access_token,
+          'Prefer': 'return=minimal'
+        },
+        body: JSON.stringify({ ...formData, full_text: sermonText, user_id: currentUser.id })
+      });
+
+      document.getElementById('sermon-title').textContent = formData.topic;
+      document.getElementById('sermon-meta').textContent = (formData.scripture || 'No scripture') + ' · ' + formData.tone;
+      document.getElementById('sermon-content').innerHTML = sermonText.replace(/\n/g, '<br>');
+      document.getElementById('sermon-output').classList.add('active');
+
+    } catch (error) {
+      alert('Failed to generate sermon: ' + error.message);
+      document.getElementById('empty-state').style.display = 'block';
+    } finally {
+      document.getElementById('loading-state').classList.remove('active');
+      document.getElementById('generate-btn').disabled = false;
+    }
+  }
+
+  document.getElementById('copy-btn').addEventListener('click', () => {
+    navigator.clipboard.writeText(document.getElementById('sermon-content').innerText);
+    alert('Copied to clipboard!');
+  });
+
+  document.getElementById('regenerate-btn').addEventListener('click', generateSermon);
+
+  // HISTORY
+  async function loadHistory() {
+    const grid = document.getElementById('history-grid');
+    grid.innerHTML = '<div class="history-empty"><h3>Loading...</h3></div>';
+    try {
+      const { data: { session } } = await sb.auth.getSession();
+      const res = await fetch(
+        SUPABASE_URL + '/rest/v1/sermons?user_id=eq.' + currentUser.id + '&order=created_at.desc',
+        { headers: { 'apikey': SUPABASE_KEY, 'Authorization': 'Bearer ' + session.access_token } }
+      );
+      allSermons = await res.json();
+      renderHistory(allSermons);
+    } catch (e) {
+      grid.innerHTML = '<div class="history-empty"><h3>Failed to load sermons</h3></div>';
+    }
+  }
+
+  function renderHistory(sermons) {
+    const grid = document.getElementById('history-grid');
+    if (!sermons || sermons.length === 0) {
+      grid.innerHTML = '<div class="history-empty"><h3>No sermons yet</h3><p>Generate your first sermon to see it here</p></div>';
+      return;
+    }
+    grid.innerHTML = sermons.map(s => `
+      <div class="sermon-card" onclick="openSermon('${s.id}')">
+        <div class="sermon-card-title">${s.topic || 'Untitled'}</div>
+        <div class="sermon-card-meta">
+          ${s.scripture ? `<span>${s.scripture}</span>` : ''}
+          ${s.tone ? `<span class="sermon-card-badge">${s.tone}</span>` : ''}
+          ${s.length ? `<span>${s.length} min</span>` : ''}
+          <span>${new Date(s.created_at).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}</span>
+        </div>
+        <div class="sermon-card-preview">${(s.full_text || '').replace(/<[^>]*>/g, '').slice(0, 150)}...</div>
+      </div>
+    `).join('');
+  }
+
+  function filterHistory() {
+    const q = document.getElementById('history-search').value.toLowerCase();
+    if (!q) { renderHistory(allSermons); return; }
+    renderHistory(allSermons.filter(s =>
+      (s.topic||'').toLowerCase().includes(q) ||
+      (s.scripture||'').toLowerCase().includes(q) ||
+      (s.notes||'').toLowerCase().includes(q) ||
+      (s.full_text||'').toLowerCase().includes(q)
+    ));
+  }
+
+  function openSermon(id) {
+    const s = allSermons.find(s => s.id === id);
+    if (!s) return;
+    currentModalSermonId = id;
+    document.getElementById('modal-title').textContent = s.topic || 'Untitled';
+    document.getElementById('modal-meta').textContent =
+      (s.scripture || 'No scripture') + ' · ' + (s.tone || '') + ' · ' +
+      new Date(s.created_at).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' });
+    document.getElementById('modal-content').innerHTML = (s.full_text || '').replace(/\n/g, '<br>');
+    document.getElementById('sermon-modal').classList.add('active');
+  }
+
+  function closeModal() {
+    document.getElementById('sermon-modal').classList.remove('active');
+    currentModalSermonId = null;
+  }
+
+  function copyModalSermon() {
+    navigator.clipboard.writeText(document.getElementById('modal-content').innerText);
+    alert('Copied to clipboard!');
+  }
+
+  async function deleteSermon() {
+    if (!currentModalSermonId || !confirm('Delete this sermon? This cannot be undone.')) return;
+    const { data: { session } } = await sb.auth.getSession();
+    await fetch(SUPABASE_URL + '/rest/v1/sermons?id=eq.' + currentModalSermonId, {
+      method: 'DELETE',
+      headers: { 'apikey': SUPABASE_KEY, 'Authorization': 'Bearer ' + session.access_token }
     });
+    closeModal();
+    loadHistory();
+  }
 
-    async function generateSermon() {
-      const formData = {
-        topic: document.getElementById('topic').value,
-        scripture: document.getElementById('scripture').value,
-        tone: document.getElementById('tone').value,
-        length: document.getElementById('length').value,
-        notes: document.getElementById('notes').value
-      };
+  document.getElementById('sermon-modal').addEventListener('click', function(e) {
+    if (e.target === this) closeModal();
+  });
 
-      emptyState.style.display = 'none';
-      sermonOutput.classList.remove('active');
-      loadingState.classList.add('active');
-      generateBtn.disabled = true;
+  // SCHEDULE (localStorage per user)
+  function loadSchedule() {
+    const stored = localStorage.getItem('schedule_' + (currentUser?.id || ''));
+    scheduleItems = stored ? JSON.parse(stored) : [];
+  }
 
-      try {
-        const response = await fetch(WORKER_URL, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(formData)
-        });
+  function saveSchedule() {
+    localStorage.setItem('schedule_' + currentUser.id, JSON.stringify(scheduleItems));
+  }
 
-        const rawBody = await response.text();
-        let data;
-        try {
-          data = JSON.parse(rawBody);
-        } catch {
-          throw new Error(`Server returned non-JSON response (HTTP ${response.status}). First 200 chars: ${rawBody.slice(0, 200)}`);
-        }
+  function addScheduleItem() {
+    const date = document.getElementById('schedule-date').value;
+    const topic = document.getElementById('schedule-topic').value.trim();
+    const scripture = document.getElementById('schedule-scripture').value.trim();
+    const notes = document.getElementById('schedule-notes').value.trim();
+    if (!date || !topic) { alert('Please enter a date and topic.'); return; }
+    scheduleItems.push({ id: Date.now(), date, topic, scripture, notes });
+    scheduleItems.sort((a, b) => new Date(a.date) - new Date(b.date));
+    saveSchedule();
+    renderSchedule();
+    document.getElementById('schedule-date').value = '';
+    document.getElementById('schedule-topic').value = '';
+    document.getElementById('schedule-scripture').value = '';
+    document.getElementById('schedule-notes').value = '';
+  }
 
-        if (!response.ok) {
-          throw new Error(data.error || 'Failed to generate sermon');
-        }
+  function removeScheduleItem(id) {
+    scheduleItems = scheduleItems.filter(s => s.id !== id);
+    saveSchedule();
+    renderSchedule();
+  }
 
-        const sermonText = data.text || (data.content && data.content[0] && data.content[0].text);
-        if (!sermonText) throw new Error('No sermon text returned.');
-
-        const { data: { session } } = await sb.auth.getSession();
-        await saveSermon({ ...formData, full_text: sermonText, user_id: session?.user?.id });
-
-        displaySermon(formData.topic, formData.scripture, sermonText);
-
-      } catch (error) {
-        alert('Failed to generate sermon: ' + error.message);
-        emptyState.style.display = 'block';
-      } finally {
-        loadingState.classList.remove('active');
-        generateBtn.disabled = false;
-      }
+  function renderSchedule() {
+    const grid = document.getElementById('schedule-grid');
+    if (scheduleItems.length === 0) {
+      grid.innerHTML = '<div class="schedule-empty"><h3>No sermons scheduled yet</h3><p>Plan ahead by adding upcoming sermon dates above</p></div>';
+      return;
     }
+    grid.innerHTML = scheduleItems.map(s => `
+      <div class="schedule-card">
+        <div class="schedule-date">${new Date(s.date + 'T12:00:00').toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric', year: 'numeric' })}</div>
+        <div class="schedule-title">${s.topic}</div>
+        <div class="schedule-meta">${[s.scripture, s.notes].filter(Boolean).join(' · ')}</div>
+        <div style="display:flex; gap:8px; margin-top:12px;">
+          <button class="btn-sm" onclick="prefillGenerator('${s.topic.replace(/'/g,"\\'")}', '${s.scripture.replace(/'/g,"\\'")}')">Generate Sermon</button>
+          <button class="btn-sm" onclick="removeScheduleItem(${s.id})" style="color:#c53030;">Remove</button>
+        </div>
+      </div>
+    `).join('');
+  }
 
-    async function saveSermon(sermonData) {
-      try {
-        await fetch(SUPABASE_URL + '/rest/v1/sermons', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-            'apikey': SUPABASE_KEY,
-            'Authorization': 'Bearer ' + SUPABASE_KEY,
-            'Prefer': 'return=minimal'
-          },
-          body: JSON.stringify(sermonData)
-        });
-      } catch (e) { console.error('Save error:', e); }
-    }
-
-    function displaySermon(title, scripture, content) {
-      document.getElementById('sermon-title').textContent = title;
-      document.getElementById('sermon-meta').textContent = scripture || 'No scripture reference';
-      document.getElementById('sermon-content').innerHTML = content.replace(/\n/g, '<br>');
-      sermonOutput.classList.add('active');
-    }
-
-    document.getElementById('copy-btn').addEventListener('click', () => {
-      navigator.clipboard.writeText(document.getElementById('sermon-content').innerText);
-      alert('Sermon copied to clipboard!');
-    });
-
-    document.getElementById('save-btn').addEventListener('click', () => {
-      alert('Sermon already saved automatically!');
-    });
-
-    document.getElementById('regenerate-btn').addEventListener('click', generateSermon);
-  </script>
+  function prefillGenerator(topic, scripture) {
+    document.getElementById('topic').value = topic;
+    document.getElementById('scripture').value = scripture;
+    showPage('generator', document.getElementById('tab-generator'));
+  }
+</script>
 
 </body>
 </html>
