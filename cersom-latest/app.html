@@ -466,7 +466,7 @@
       if (!sermonText) throw new Error('No text returned.');
 
       const { data: { session } } = await sb.auth.getSession();
-      await fetch(SUPABASE_URL + '/rest/v1/sermons', {
+      const saveRes = await fetch(SUPABASE_URL + '/rest/v1/sermons', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -474,8 +474,12 @@
           'Authorization': 'Bearer ' + session.access_token,
           'Prefer': 'return=minimal'
         },
-        body: JSON.stringify({ user_id: currentUser.id, topic, scripture_reference: scripture, tone, length, notes, full_text: sermonText })
+        body: JSON.stringify({ user_id: currentUser.id, title: topic, topic, scripture_reference: scripture, tone, length, notes, full_text: sermonText })
       });
+      if (!saveRes.ok) {
+        const saveErr = await saveRes.text();
+        console.error('Failed to save sermon:', saveErr);
+      }
 
       document.getElementById('sermon-title').textContent = topic;
       document.getElementById('sermon-meta').textContent = (scripture || 'No scripture') + ' · ' + tone + ' · ' + length + ' min';
