@@ -523,9 +523,15 @@
       const sermonText = data.text || data.content?.[0]?.text;
       if (!sermonText) throw new Error('No text returned.');
 
+      // Use scripture Claude chose if user left it blank
+      const displayScripture = data.scripture || scripture || '';
+      if (data.scripture) {
+        document.getElementById('scripture').value = data.scripture;
+      }
+
       // ── Show sermon text immediately ─────────────────────────────────────
       document.getElementById('sermon-title').textContent = topic;
-      document.getElementById('sermon-meta').textContent = (scripture || 'No scripture') + ' · ' + tone + ' · ' + length + ' min';
+      document.getElementById('sermon-meta').textContent = (displayScripture || 'No scripture') + ' · ' + tone + ' · ' + length + ' min';
       document.getElementById('sermon-content').innerHTML = sermonText.replace(/\n/g, '<br>');
       document.getElementById('sermon-output').classList.add('active');
 
@@ -541,12 +547,12 @@
       fetch(WORKER_URL + '/image', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ topic, scripture })
+        body: JSON.stringify({ topic, scripture: displayScripture })
       }).then(r => r.json()).then(imgData => {
         if (imgData.image) {
           illImg.src = imgData.image;
           illImg.alt = `Biblical illustration for: ${topic}`;
-          illCaption.textContent = scripture ? `${topic} — ${scripture}` : topic;
+          illCaption.textContent = displayScripture ? `${topic} — ${displayScripture}` : topic;
           illImg.onload = () => { illLoading.style.display = 'none'; illImg.style.display = 'block'; };
           illImg.onerror = () => { illBlock.style.display = 'none'; };
         } else {

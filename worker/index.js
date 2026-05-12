@@ -37,9 +37,9 @@ export default {
     // ── Default endpoint: sermon text only ──────────────────────────────────
     try {
       const { topic, scripture, tone, length, notes } = await request.json();
-      const sermonText = await generateSermon(env, { topic, scripture, tone, length, notes });
+      const { text, scripture: resolvedScripture } = await generateSermon(env, { topic, scripture, tone, length, notes });
       return new Response(
-        JSON.stringify({ text: sermonText }),
+        JSON.stringify({ text, scripture: resolvedScripture }),
         { headers: { ...CORS, 'Content-Type': 'application/json' } }
       );
     } catch (err) {
@@ -55,15 +55,16 @@ export default {
 // ── Sermon generation (Claude) ──────────────────────────────────────────────
 async function generateSermon(env, { topic, scripture, tone, length, notes }) {
   const wordCount = Math.round(parseInt(length || 20) * 130);
+  const needsScripture = !scripture || /find|for me/i.test(scripture.trim());
 
   const systemPrompt = `You are an experienced pastor and theologian who crafts compelling, biblically-grounded sermons. Write sermons that are spiritually rich, practically applicable, and appropriate for Sunday morning worship.`;
 
   const userPrompt = `Write a complete ${length}-minute sermon (approximately ${wordCount} words) on the topic: "${topic}"
-${scripture ? `Primary Scripture: ${scripture}` : ''}
+${needsScripture ? 'Choose the most fitting scripture passage for this topic.' : `Primary Scripture: ${scripture}`}
 Tone: ${tone}
 ${notes ? `Additional context: ${notes}` : ''}
 
-Structure the sermon with:
+${needsScripture ? 'Start your ENTIRE response with this line (no other text before it):\nSCRIPTURE: [the exact reference you chose, e.g. Romans 8:28]\n\n' : ''}Structure the sermon with:
 - A compelling title
 - An engaging introduction that connects with the congregation
 - 3 main points, each with biblical support
@@ -93,7 +94,20 @@ Format the sermon clearly with headers for each section.`;
   }
 
   const data = await response.json();
-  return data.content?.[0]?.text || '';
+  const raw = data.content?.[0]?.text || '';
+
+  // Extract scripture reference if Claude chose one
+  let chosenScripture = scripture || '';
+  let sermonText = raw;
+  if (needsScripture) {
+    const match = raw.match(/^SCRIPTURE:\s*(.+)/m);
+    if (match) {
+      chosenScripture = match[1].trim();
+      sermonText = raw.replace(/^SCRIPTURE:\s*.+\n?/, '').trimStart();
+    }
+  }
+
+  return { text: sermonText, scripture: chosenScripture };
 }
 
 // ── Biblical image generation (Cloudflare Workers AI) ───────────────────────
