@@ -1,0 +1,10 @@
+name = "generate-sermon"
+main = "index.js"
+compatibility_date = "2024-01-01"
+
+[ai]
+binding = "AI"
+
+[vars]
+# Add your Anthropic API key in the Cloudflare dashboard under Workers > Settings > Variables
+# ANTHROPIC_API_KEY = "sk-ant-..."
