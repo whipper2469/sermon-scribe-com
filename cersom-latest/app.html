@@ -162,6 +162,53 @@
     .sermon-content ul, .sermon-content ol { margin: 14px 0; padding-left: 24px; }
     .sermon-content li { margin-bottom: 8px; }
 
+    /* SERMON ILLUSTRATION */
+    .sermon-illustration {
+      margin: 28px 0;
+      border: 2px solid var(--gold);
+      border-radius: 12px;
+      overflow: hidden;
+      page-break-inside: avoid;
+    }
+    .sermon-illustration img {
+      width: 100%;
+      max-height: 340px;
+      object-fit: cover;
+      display: block;
+    }
+    .illustration-caption {
+      padding: 12px 18px;
+      background: #fffdf7;
+      border-top: 1px solid rgba(201,145,42,0.2);
+      font-size: 13px;
+      color: var(--gray);
+      font-style: italic;
+      text-align: center;
+    }
+    .illustration-loading {
+      width: 100%;
+      height: 220px;
+      background: linear-gradient(90deg, #f5efe0 25%, #ede3cc 50%, #f5efe0 75%);
+      background-size: 200% 100%;
+      animation: shimmer 1.4s infinite;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--gold);
+      font-size: 14px;
+      gap: 8px;
+    }
+    @keyframes shimmer { 0% { background-position: 200% 0; } 100% { background-position: -200% 0; } }
+
+    /* PRINT */
+    @media print {
+      header, .nav-tabs, .sidebar, .upgrade-banner, .sermon-actions, .btn-sm { display: none !important; }
+      .main-layout { grid-template-columns: 1fr !important; }
+      .main-content { border: none !important; padding: 0 !important; }
+      .sermon-illustration { page-break-inside: avoid; }
+      body { background: white !important; }
+    }
+
     .loading { display: none; text-align: center; padding: 80px 40px; }
     .loading.active { display: block; }
     .loading-spinner { width: 50px; height: 50px; border: 4px solid rgba(201,145,42,0.2); border-top-color: var(--gold); border-radius: 50%; animation: spin 1s linear infinite; margin: 0 auto 20px; }
@@ -321,8 +368,18 @@
               </div>
               <div class="sermon-actions">
                 <button class="btn-sm" id="copy-btn">Copy</button>
+                <button class="btn-sm" onclick="window.print()">Print</button>
                 <button class="btn-sm" id="regenerate-btn">Regenerate</button>
               </div>
+            </div>
+            <!-- Biblical illustration -->
+            <div class="sermon-illustration" id="sermon-illustration" style="display:none">
+              <div class="illustration-loading" id="illustration-loading">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+                Generating biblical illustration...
+              </div>
+              <img id="illustration-img" src="" alt="" style="display:none">
+              <div class="illustration-caption" id="illustration-caption"></div>
             </div>
             <div class="sermon-content" id="sermon-content"></div>
           </div>
@@ -450,6 +507,7 @@
     document.getElementById('generate-btn').disabled = true;
 
     try {
+      // ── Step 1: get sermon text (fast) ──────────────────────────────────
       const response = await fetch(WORKER_URL, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -464,6 +522,37 @@
 
       const sermonText = data.text || data.content?.[0]?.text;
       if (!sermonText) throw new Error('No text returned.');
+
+      // ── Show sermon text immediately ─────────────────────────────────────
+      document.getElementById('sermon-title').textContent = topic;
+      document.getElementById('sermon-meta').textContent = (scripture || 'No scripture') + ' · ' + tone + ' · ' + length + ' min';
+      document.getElementById('sermon-content').innerHTML = sermonText.replace(/\n/g, '<br>');
+      document.getElementById('sermon-output').classList.add('active');
+
+      // ── Step 2: fire image request in background (slow, doesn't block) ───
+      const illBlock = document.getElementById('sermon-illustration');
+      const illImg = document.getElementById('illustration-img');
+      const illLoading = document.getElementById('illustration-loading');
+      const illCaption = document.getElementById('illustration-caption');
+      illBlock.style.display = 'block';
+      illLoading.style.display = 'flex';
+      illImg.style.display = 'none';
+
+      fetch(WORKER_URL + '/image', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ topic, scripture })
+      }).then(r => r.json()).then(imgData => {
+        if (imgData.image) {
+          illImg.src = imgData.image;
+          illImg.alt = `Biblical illustration for: ${topic}`;
+          illCaption.textContent = scripture ? `${topic} — ${scripture}` : topic;
+          illImg.onload = () => { illLoading.style.display = 'none'; illImg.style.display = 'block'; };
+          illImg.onerror = () => { illBlock.style.display = 'none'; };
+        } else {
+          illBlock.style.display = 'none';
+        }
+      }).catch(() => { illBlock.style.display = 'none'; });
 
       const { data: { session } } = await sb.auth.getSession();
       const saveRes = await fetch(SUPABASE_URL + '/rest/v1/sermons', {
@@ -480,11 +569,6 @@
         const saveErr = await saveRes.text();
         console.error('Failed to save sermon:', saveErr);
       }
-
-      document.getElementById('sermon-title').textContent = topic;
-      document.getElementById('sermon-meta').textContent = (scripture || 'No scripture') + ' · ' + tone + ' · ' + length + ' min';
-      document.getElementById('sermon-content').innerHTML = sermonText.replace(/\n/g, '<br>');
-      document.getElementById('sermon-output').classList.add('active');
 
     } catch (error) {
       alert('Failed: ' + error.message);
