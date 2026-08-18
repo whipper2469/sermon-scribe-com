@@ -1,0 +1,15 @@
+# Set project_id to the ref of whichever Supabase project holds Sermon Scribe.
+project_id = "pythmzvpbtlkhootkqlt"
+
+# Stripe calls this endpoint directly. Stripe has no Supabase JWT to send, so
+# JWT verification must be off — the stripe-signature header is what proves the
+# request is genuine, and the function rejects anything that fails it.
+[functions.stripe-webhook]
+verify_jwt = false
+
+# These two are called by the browser with the signed-in user's JWT.
+[functions.create-checkout-session]
+verify_jwt = true
+
+[functions.customer-portal]
+verify_jwt = true

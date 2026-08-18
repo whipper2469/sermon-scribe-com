@@ -1,6 +1,9 @@
 # Wrangler's local cache — holds the Cloudflare account id, never needed in git
 .wrangler/
 
+# Supabase CLI's local cache
+supabase/.temp/
+
 node_modules/
 .env
 .env.local
