@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Upgrade to Pro — Sermon Scribe</title>
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <style>
     :root {
       --gold: #c9912a;
@@ -257,21 +258,6 @@
     .success-banner.show { display: block; }
     .success-banner h3 { color: var(--green); font-family: 'Playfair Display', serif; font-size: 1.2rem; margin-bottom: 8px; }
     .success-banner p { color: var(--green); font-size: 14px; line-height: 1.6; }
-    /* The mailto may not open anything (webmail, no mail client configured), so the
-       same text has to be readable and copyable straight off the page. */
-    .success-banner .details {
-      text-align: left; background: #fff; border: 1px solid var(--green-border);
-      border-radius: 8px; padding: 14px 16px; margin: 14px 0;
-      font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
-      font-size: 13px; line-height: 1.7; color: var(--dark);
-      white-space: pre-wrap; word-break: break-word;
-    }
-    .btn-copy-details {
-      background: none; border: 1px solid var(--green); color: var(--green);
-      border-radius: 6px; padding: 8px 14px; font-family: inherit; font-size: 13px;
-      font-weight: 600; cursor: pointer;
-    }
-    .btn-copy-details:hover { background: #fff; }
 
     .security-note {
       background: white;
@@ -398,7 +384,7 @@
   <div class="page-header">
     <p class="page-eyebrow">Simple & Secure</p>
     <h1 class="page-title">Upgrade Your Plan</h1>
-    <p class="page-sub">Choose a plan below and complete your payment via Interac e-Transfer. Access is activated within 24 hours.</p>
+    <p class="page-sub">Choose a plan, then pay by card for instant access — or by Interac e-Transfer, activated within 24 hours.</p>
   </div>
 
   <!-- PLAN SELECTION -->
@@ -433,8 +419,59 @@
     </div>
   </div>
 
+  <!-- PAYMENT METHOD CHOICE -->
+  <div class="method-tabs" style="display:flex; gap:12px; max-width:760px; margin:0 auto 28px; ">
+    <button id="tab-card" onclick="selectMethod('card')"
+            style="flex:1; padding:18px 20px; border-radius:12px; border:2px solid var(--gold); background:var(--gold); color:#fff; font-family:inherit; font-size:16px; font-weight:600; cursor:pointer; text-align:left;">
+      Pay by card
+      <span style="display:block; font-weight:400; font-size:13px; opacity:.85; margin-top:4px;">Instant access · Visa, Mastercard, Amex</span>
+    </button>
+    <button id="tab-interac" onclick="selectMethod('interac')"
+            style="flex:1; padding:18px 20px; border-radius:12px; border:2px solid rgba(201,145,42,.35); background:#fff; color:#1a1208; font-family:inherit; font-size:16px; font-weight:600; cursor:pointer; text-align:left;">
+      Pay by Interac e-Transfer
+      <span style="display:block; font-weight:400; font-size:13px; opacity:.7; margin-top:4px;">Activated within 24 hours</span>
+    </button>
+  </div>
+
+  <!-- CARD PAYMENT -->
+  <div class="payment-section" id="card-panel">
+    <div class="payment-header">
+      <div class="lock-icon">🔒</div>
+      <div class="payment-header-text">
+        <h3>Secure Card Payment</h3>
+        <p>Handled by Stripe — your card details never touch our servers</p>
+      </div>
+      <div class="security-badges">
+        <span class="badge">PCI Compliant</span>
+        <span class="badge">Stripe Secured</span>
+      </div>
+    </div>
+
+    <div class="payment-body">
+      <div class="selected-plan-summary">
+        <div>
+          <div class="summary-label">Selected plan</div>
+          <div class="summary-value" id="card-summary-plan">Pro — Monthly</div>
+        </div>
+        <div class="summary-price" id="card-summary-price">$19.00</div>
+      </div>
+
+      <p style="margin:22px 0; color:#5c5344; line-height:1.7;">
+        You'll be taken to Stripe's secure checkout to enter your card. Your plan
+        activates the moment payment succeeds, and renews monthly until you cancel.
+        Cancel anytime from your account — no notice period.
+      </p>
+
+      <button class="btn-confirm" id="btn-card-checkout" onclick="startCheckout()">
+        Continue to secure checkout →
+      </button>
+
+      <p id="card-error" style="display:none; margin-top:16px; padding:14px 16px; border-radius:8px; background:#fdf2f2; color:#9b2c2c; font-size:14px;"></p>
+    </div>
+  </div>
+
   <!-- PAYMENT SECTION -->
-  <div class="payment-section">
+  <div class="payment-section" id="interac-panel" style="display:none;">
     <div class="payment-header">
       <div class="lock-icon">🔒</div>
       <div class="payment-header-text">
@@ -501,7 +538,7 @@
           <div class="step-num">5</div>
           <div class="step-content">
             <h4>Tell us you've sent it</h4>
-            <p>Fill in the form below and it will open a pre-filled email to us — send that email and we'll activate your account. Most activations happen within a few hours, and always within 24.</p>
+            <p>Fill in the form below so we can match your transfer to your account. Most activations happen within a few hours, and always within 24.</p>
           </div>
         </div>
       </div>
@@ -534,15 +571,12 @@
           <input type="text" id="confirm-ref" placeholder="From your bank's confirmation screen">
         </div>
 
-        <button class="btn-confirm" onclick="submitConfirmation()">I've sent it — email us the details →</button>
+        <button class="btn-confirm" onclick="submitConfirmation()">I've sent my payment →</button>
 
         <div class="success-banner" id="success-banner">
-          <h3>One more step — send the email</h3>
-          <p>We've opened a pre-filled email to <strong><!--email_off-->support@sermon-scribe.com<!--email_on--></strong>. <strong>Send it</strong>, and we'll activate your <strong id="success-plan"></strong> account within 24 hours of your transfer arriving.</p>
-          <p>Nothing opened, or you use webmail? Copy these details into an email to <strong><!--email_off-->support@sermon-scribe.com<!--email_on--></strong> yourself:</p>
-          <div class="details" id="confirm-details"></div>
-          <p><button type="button" class="btn-copy-details" id="copy-details-btn" onclick="copyDetails()">Copy these details</button></p>
-          <p style="margin-top:12px"><a href="#" onclick="generateReceipt(); return false;" style="color: var(--green); font-weight: 600;">View a copy for your records →</a></p>
+          <h3>✓ Confirmation recorded</h3>
+          <p>Thank you — we have your confirmation for the <strong id="success-plan"></strong> plan. We'll activate your account once the transfer arrives, and email <strong id="success-email"></strong> when it's live. Most activations happen within a few hours, and always within 24.<br><br>
+          <a href="#" onclick="generateReceipt(); return false;" style="color: var(--green); font-weight: 600;">View a copy for your records →</a></p>
         </div>
       </div>
     </div>
@@ -613,11 +647,43 @@
 </div>
 
 <script>
+  const SUPABASE_URL = 'https://pythmzvpbtlkhootkqlt.supabase.co';
+  const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InB5dGhtenZwYnRsa2hvb3RrcWx0Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODY5OTkzODAsImV4cCI6MjEwMjU3NTM4MH0.Cz9j-ECVhSMAVW4DSP43qMDAl9GERzHwrqnSOcTItOY';
+  const { createClient } = supabase;
+  const sb = createClient(SUPABASE_URL, SUPABASE_KEY);
+
+  // Both payment paths need to know who is upgrading: card checkout attaches
+  // the plan to a user, and an e-Transfer claim is worthless if we can't tell
+  // whose account to activate.
+  let currentUser = null;
+  sb.auth.getSession().then(({ data }) => {
+    if (!data.session) {
+      window.location.href = '/login.html?next=/upgrade.html';
+      return;
+    }
+    currentUser = data.session.user;
+    const emailField = document.getElementById('confirm-email');
+    if (emailField && !emailField.value) emailField.value = currentUser.email || '';
+  });
+
   let selectedPlan = 'pro';
+  let selectedMethod = 'card';
   const plans = {
-    pro: { name: 'Pro — Monthly', price: '$19.00', amount: '$19.00 CAD', message: 'SermonScribe Pro - [your email address]' },
-    ministry: { name: 'Ministry — Monthly', price: '$49.00', amount: '$49.00 CAD', message: 'SermonScribe Ministry - [your email address]' }
+    pro: { name: 'Pro — Monthly', price: '$19.00', amount: '$19.00 CAD', numeric: 19.00, message: 'SermonScribe Pro - [your email address]' },
+    ministry: { name: 'Ministry — Monthly', price: '$49.00', amount: '$49.00 CAD', numeric: 49.00, message: 'SermonScribe Ministry - [your email address]' }
   };
+
+  function selectMethod(method) {
+    selectedMethod = method;
+    const card = method === 'card';
+    document.getElementById('card-panel').style.display = card ? '' : 'none';
+    document.getElementById('interac-panel').style.display = card ? 'none' : '';
+
+    const on = { background: 'var(--gold)', color: '#fff', border: '2px solid var(--gold)' };
+    const off = { background: '#fff', color: '#1a1208', border: '2px solid rgba(201,145,42,.35)' };
+    Object.assign(document.getElementById('tab-card').style, card ? on : off);
+    Object.assign(document.getElementById('tab-interac').style, card ? off : on);
+  }
 
   function selectPlan(plan) {
     selectedPlan = plan;
@@ -625,9 +691,43 @@
     document.getElementById('plan-' + plan).classList.add('selected');
     document.getElementById('summary-plan').textContent = plans[plan].name;
     document.getElementById('summary-price').textContent = plans[plan].price;
+    document.getElementById('card-summary-plan').textContent = plans[plan].name;
+    document.getElementById('card-summary-price').textContent = plans[plan].price;
     document.getElementById('amount-display').textContent = plans[plan].amount;
     document.getElementById('etransfer-message').textContent = plans[plan].message;
     document.getElementById('confirm-amount').value = plans[plan].price;
+  }
+
+  async function startCheckout() {
+    const btn = document.getElementById('btn-card-checkout');
+    const err = document.getElementById('card-error');
+    err.style.display = 'none';
+    btn.disabled = true;
+    btn.textContent = 'Opening secure checkout…';
+
+    try {
+      const { data: { session } } = await sb.auth.getSession();
+      if (!session) { window.location.href = '/login.html?next=/upgrade.html'; return; }
+
+      const res = await fetch(SUPABASE_URL + '/functions/v1/create-checkout-session', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer ' + session.access_token
+        },
+        body: JSON.stringify({ plan: selectedPlan })
+      });
+
+      const payload = await res.json();
+      if (!res.ok) throw new Error(payload.error || 'Could not start checkout');
+
+      window.location.href = payload.url;
+    } catch (e) {
+      err.textContent = e.message + ' — if this keeps happening, email support@sermon-scribe.com and we\'ll sort it out.';
+      err.style.display = 'block';
+      btn.disabled = false;
+      btn.textContent = 'Continue to secure checkout →';
+    }
   }
 
   function copyEmail() {
@@ -641,73 +741,50 @@
   document.getElementById('confirm-amount').value = '$19.00';
 
   selectPlan('pro');
+  selectMethod('card');
 
-  // This page has no backend. The confirmation is delivered by the customer's own mail
-  // client, so nothing here may claim we received anything — we only know the details
-  // were handed to their mail app, and that can silently do nothing (webmail, no client
-  // configured). The same text is therefore always rendered on the page to copy by hand.
-  function buildConfirmationText() {
-    const ref = document.getElementById('confirm-ref').value.trim();
-    return [
-      'Plan: ' + plans[selectedPlan].name,
-      'Amount sent: ' + plans[selectedPlan].amount,
-      'Date sent: ' + document.getElementById('confirm-date').value,
-      'Name: ' + document.getElementById('confirm-name').value.trim(),
-      'Account email: ' + document.getElementById('confirm-email').value.trim(),
-      'Bank confirmation number: ' + (ref || 'not provided')
-    ].join('\n');
-  }
-
-  function submitConfirmation() {
+  async function submitConfirmation() {
     const name = document.getElementById('confirm-name').value.trim();
     const email = document.getElementById('confirm-email').value.trim();
     const date = document.getElementById('confirm-date').value;
+    const ref = document.getElementById('confirm-ref').value.trim() || null;
 
     if (!name || !email || !date) {
       alert('Please fill in your name, email, and payment date.');
       return;
     }
 
-    const details = buildConfirmationText();
+    if (!currentUser) { window.location.href = '/login.html?next=/upgrade.html'; return; }
 
-    // Render the fallback before navigating — a mailto: can unload the page.
-    document.getElementById('confirm-details').textContent = details;
+    // This used to show a success banner and print a receipt without telling
+    // anyone. The claim is now recorded so the payment can actually be matched
+    // and the account activated.
+    const { error } = await sb.from('interac_claims').insert({
+      user_id: currentUser.id,
+      plan: selectedPlan,
+      amount_cad: plans[selectedPlan].numeric,
+      sender_name: name,
+      sender_email: email,
+      sent_on: date,
+      reference: ref
+    });
+
+    if (error) {
+      alert('We could not record your payment confirmation: ' + error.message +
+            '\n\nPlease email support@sermon-scribe.com so we can activate your account manually.');
+      return;
+    }
+
+    // Recording the claim is not the same as the money arriving, so the wording
+    // below says what we actually know: we have the confirmation, not the funds.
     document.getElementById('success-plan').textContent = plans[selectedPlan].name;
+    document.getElementById('success-email').textContent = email;
     document.getElementById('success-banner').classList.add('show');
-
-    // Left enabled on purpose: if no mail client opened, the customer needs to retry.
-    document.querySelector('.btn-confirm').textContent = 'Re-open the email';
+    document.querySelector('.btn-confirm').textContent = '\u2713 Confirmation recorded';
+    document.querySelector('.btn-confirm').disabled = true;
+    document.querySelector('.btn-confirm').style.background = '#276749';
 
     window.scrollTo({ top: document.getElementById('success-banner').offsetTop - 100, behavior: 'smooth' });
-
-    window.location.href = 'mailto:support@sermon-scribe.com'
-      + '?subject=' + encodeURIComponent('Interac payment sent — ' + plans[selectedPlan].name)
-      + '&body=' + encodeURIComponent('I have sent an Interac e-Transfer for Sermon Scribe.\n\n' + details + '\n');
-  }
-
-  function copyDetails() {
-    const btn = document.getElementById('copy-details-btn');
-    const text = document.getElementById('confirm-details').textContent;
-
-    function done() {
-      btn.textContent = 'Copied';
-      setTimeout(function () { btn.textContent = 'Copy these details'; }, 2000);
-    }
-    function fallback() {
-      const ta = document.createElement('textarea');
-      ta.value = text;
-      document.body.appendChild(ta);
-      ta.select();
-      try { document.execCommand('copy'); done(); }
-      catch (e) { btn.textContent = 'Select the text above to copy'; }
-      document.body.removeChild(ta);
-    }
-
-    if (navigator.clipboard && navigator.clipboard.writeText) {
-      navigator.clipboard.writeText(text).then(done, fallback);
-    } else {
-      fallback();
-    }
   }
 
   function generateReceipt() {
