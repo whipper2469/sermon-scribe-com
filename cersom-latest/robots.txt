@@ -1,0 +1,12 @@
+# Sermon Scribe
+#
+# Cloudflare also serves a managed robots.txt carrying its AI content-signal
+# declarations. Whichever of the two wins, the rules below are the site's intent:
+# the marketing pages are open to search engines, the signed-in app is not.
+
+User-agent: *
+Allow: /
+Disallow: /app
+Disallow: /dashboard
+
+Sitemap: https://sermon-scribe.com/sitemap.xml

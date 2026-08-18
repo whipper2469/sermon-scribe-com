@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Page not found — Sermon Scribe</title>
+<meta name="robots" content="noindex">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --ink: #1a1208;
+    --gold: #c9912a;
+    --warm-white: #fdfaf4;
+    --muted: #7a6e5f;
+    --border: rgba(201,145,42,0.25);
+  }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--warm-white);
+    color: var(--ink);
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem;
+  }
+
+  main { max-width: 32rem; text-align: center; }
+
+  .mark {
+    font-family: 'Playfair Display', serif;
+    font-size: 0.85rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--gold);
+  }
+
+  h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(2rem, 6vw, 2.9rem);
+    font-weight: 700;
+    line-height: 1.15;
+    margin: 1.4rem 0 0.9rem;
+  }
+
+  p {
+    font-weight: 300;
+    font-size: 1.05rem;
+    line-height: 1.65;
+    color: var(--muted);
+  }
+
+  .rule {
+    width: 4rem;
+    height: 2px;
+    background: var(--gold);
+    margin: 2rem auto;
+    border: 0;
+  }
+
+  .links {
+    display: flex;
+    gap: 1.6rem;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+
+  a {
+    color: var(--ink);
+    text-decoration: none;
+    border-bottom: 1px solid var(--border);
+    padding-bottom: 2px;
+    font-size: 0.98rem;
+    transition: border-color 0.2s ease;
+  }
+
+  a:hover { border-color: var(--gold); }
+</style>
+</head>
+<body>
+  <main>
+    <p class="mark">Sermon Scribe</p>
+    <h1>That page isn&rsquo;t here.</h1>
+    <p>The link may be out of date, or the address may have a typo in it.</p>
+    <hr class="rule">
+    <div class="links">
+      <a href="/">Home</a>
+      <a href="/login">Sign in</a>
+      <a href="/upgrade">Plans</a>
+    </div>
+  </main>
+</body>
+</html>
