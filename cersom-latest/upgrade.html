@@ -257,6 +257,21 @@
     .success-banner.show { display: block; }
     .success-banner h3 { color: var(--green); font-family: 'Playfair Display', serif; font-size: 1.2rem; margin-bottom: 8px; }
     .success-banner p { color: var(--green); font-size: 14px; line-height: 1.6; }
+    /* The mailto may not open anything (webmail, no mail client configured), so the
+       same text has to be readable and copyable straight off the page. */
+    .success-banner .details {
+      text-align: left; background: #fff; border: 1px solid var(--green-border);
+      border-radius: 8px; padding: 14px 16px; margin: 14px 0;
+      font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+      font-size: 13px; line-height: 1.7; color: var(--dark);
+      white-space: pre-wrap; word-break: break-word;
+    }
+    .btn-copy-details {
+      background: none; border: 1px solid var(--green); color: var(--green);
+      border-radius: 6px; padding: 8px 14px; font-family: inherit; font-size: 13px;
+      font-weight: 600; cursor: pointer;
+    }
+    .btn-copy-details:hover { background: #fff; }
 
     .security-note {
       background: white;
@@ -485,8 +500,8 @@
         <div class="step">
           <div class="step-num">5</div>
           <div class="step-content">
-            <h4>Confirm below</h4>
-            <p>After sending, fill in the form below so we can activate your account. Most activations happen within a few hours — guaranteed within 24 hours.</p>
+            <h4>Tell us you've sent it</h4>
+            <p>Fill in the form below and it will open a pre-filled email to us — send that email and we'll activate your account. Most activations happen within a few hours, and always within 24.</p>
           </div>
         </div>
       </div>
@@ -519,12 +534,15 @@
           <input type="text" id="confirm-ref" placeholder="From your bank's confirmation screen">
         </div>
 
-        <button class="btn-confirm" onclick="submitConfirmation()">I've Sent My Payment →</button>
+        <button class="btn-confirm" onclick="submitConfirmation()">I've sent it — email us the details →</button>
 
         <div class="success-banner" id="success-banner">
-          <h3>✓ Payment Confirmation Received</h3>
-          <p>Thank you! We've received your confirmation and will activate your <strong id="success-plan"></strong> account within 24 hours. A confirmation will be sent to <strong id="success-email"></strong>.<br><br>
-          <a href="#" onclick="generateReceipt()" style="color: var(--green); font-weight: 600;">Download your receipt →</a></p>
+          <h3>One more step — send the email</h3>
+          <p>We've opened a pre-filled email to <strong><!--email_off-->support@sermon-scribe.com<!--email_on--></strong>. <strong>Send it</strong>, and we'll activate your <strong id="success-plan"></strong> account within 24 hours of your transfer arriving.</p>
+          <p>Nothing opened, or you use webmail? Copy these details into an email to <strong><!--email_off-->support@sermon-scribe.com<!--email_on--></strong> yourself:</p>
+          <div class="details" id="confirm-details"></div>
+          <p><button type="button" class="btn-copy-details" id="copy-details-btn" onclick="copyDetails()">Copy these details</button></p>
+          <p style="margin-top:12px"><a href="#" onclick="generateReceipt(); return false;" style="color: var(--green); font-weight: 600;">View a copy for your records →</a></p>
         </div>
       </div>
     </div>
@@ -546,7 +564,7 @@
     <div class="receipt-logo">Sermon<span>Scribe</span></div>
     <div class="receipt-tagline">Built for those who preach the Word</div>
 
-    <div class="receipt-title">Payment Receipt</div>
+    <div class="receipt-title">Your Payment Details</div>
     <div class="receipt-num" id="receipt-num"></div>
 
     <div class="receipt-row">
@@ -575,13 +593,15 @@
     </div>
 
     <div class="receipt-total">
-      <span>Total Paid</span>
+      <span>Amount sent</span>
       <span id="r-amount"></span>
     </div>
 
     <div class="receipt-footer">
-      Issued by Kevin Roy · Sermon Scribe © 2026<br>
-      This receipt confirms payment received via Interac e-Transfer.<br>
+      Sermon Scribe · a Claybird Labs product © 2026<br>
+      This is your own copy of the transfer details you entered. It is not a receipt and
+      not confirmation that payment has been received &mdash; we'll email you once your
+      transfer arrives and your account is active.<br>
       Questions? <!--email_off-->support@sermon-scribe.com<!--email_on-->
     </div>
 
@@ -622,6 +642,22 @@
 
   selectPlan('pro');
 
+  // This page has no backend. The confirmation is delivered by the customer's own mail
+  // client, so nothing here may claim we received anything — we only know the details
+  // were handed to their mail app, and that can silently do nothing (webmail, no client
+  // configured). The same text is therefore always rendered on the page to copy by hand.
+  function buildConfirmationText() {
+    const ref = document.getElementById('confirm-ref').value.trim();
+    return [
+      'Plan: ' + plans[selectedPlan].name,
+      'Amount sent: ' + plans[selectedPlan].amount,
+      'Date sent: ' + document.getElementById('confirm-date').value,
+      'Name: ' + document.getElementById('confirm-name').value.trim(),
+      'Account email: ' + document.getElementById('confirm-email').value.trim(),
+      'Bank confirmation number: ' + (ref || 'not provided')
+    ].join('\n');
+  }
+
   function submitConfirmation() {
     const name = document.getElementById('confirm-name').value.trim();
     const email = document.getElementById('confirm-email').value.trim();
@@ -632,14 +668,46 @@
       return;
     }
 
+    const details = buildConfirmationText();
+
+    // Render the fallback before navigating — a mailto: can unload the page.
+    document.getElementById('confirm-details').textContent = details;
     document.getElementById('success-plan').textContent = plans[selectedPlan].name;
-    document.getElementById('success-email').textContent = email;
     document.getElementById('success-banner').classList.add('show');
-    document.querySelector('.btn-confirm').textContent = '✓ Confirmation Sent';
-    document.querySelector('.btn-confirm').disabled = true;
-    document.querySelector('.btn-confirm').style.background = '#276749';
+
+    // Left enabled on purpose: if no mail client opened, the customer needs to retry.
+    document.querySelector('.btn-confirm').textContent = 'Re-open the email';
 
     window.scrollTo({ top: document.getElementById('success-banner').offsetTop - 100, behavior: 'smooth' });
+
+    window.location.href = 'mailto:support@sermon-scribe.com'
+      + '?subject=' + encodeURIComponent('Interac payment sent — ' + plans[selectedPlan].name)
+      + '&body=' + encodeURIComponent('I have sent an Interac e-Transfer for Sermon Scribe.\n\n' + details + '\n');
+  }
+
+  function copyDetails() {
+    const btn = document.getElementById('copy-details-btn');
+    const text = document.getElementById('confirm-details').textContent;
+
+    function done() {
+      btn.textContent = 'Copied';
+      setTimeout(function () { btn.textContent = 'Copy these details'; }, 2000);
+    }
+    function fallback() {
+      const ta = document.createElement('textarea');
+      ta.value = text;
+      document.body.appendChild(ta);
+      ta.select();
+      try { document.execCommand('copy'); done(); }
+      catch (e) { btn.textContent = 'Select the text above to copy'; }
+      document.body.removeChild(ta);
+    }
+
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(text).then(done, fallback);
+    } else {
+      fallback();
+    }
   }
 
   function generateReceipt() {
@@ -647,9 +715,11 @@
     const email = document.getElementById('confirm-email').value.trim();
     const date = document.getElementById('confirm-date').value;
     const ref = document.getElementById('confirm-ref').value.trim() || 'N/A';
-    const receiptNum = 'SSR-' + Date.now().toString().slice(-8);
 
-    document.getElementById('receipt-num').textContent = 'Receipt #' + receiptNum;
+    // Deliberately not a receipt number: nothing has been received or verified at this
+    // point, and an invented "SSR-…" identifier made a self-printed page look official.
+    document.getElementById('receipt-num').textContent =
+      'Prepared ' + new Date().toLocaleDateString('en-CA', { year: 'numeric', month: 'long', day: 'numeric' });
     document.getElementById('r-name').textContent = name;
     document.getElementById('r-email').textContent = email;
     document.getElementById('r-plan').textContent = plans[selectedPlan].name;
