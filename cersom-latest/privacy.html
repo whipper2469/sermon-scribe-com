@@ -56,9 +56,11 @@
       password. We never see or store your password in readable form.</li>
     <li><strong>The content you create.</strong> Sermon topics, scripture references,
       tone and length settings, any notes you enter, and the sermons generated for you.</li>
-    <li><strong>Billing information.</strong> Your plan, subscription status, and
-      billing period. <em>We do not receive or store your card number.</em> Card details
-      go directly to Stripe and never touch our servers.</li>
+    <li><strong>Billing information.</strong> Your plan, whether it is active, and the
+      date it runs to. Paid plans are paid by Interac e-Transfer, so
+      <em>no card details are involved at any point</em> &mdash; the transfer happens
+      between you and your bank, and what reaches us is the notification that it
+      arrived, together with whatever you put in the message field.</li>
     <li><strong>Basic technical data.</strong> IP address, browser type, and request
       timestamps, kept by our hosting provider for security and abuse prevention.</li>
   </ul>
@@ -82,7 +84,8 @@
   <ul>
     <li><strong>Anthropic</strong> &mdash; generates sermon text from your prompts.</li>
     <li><strong>Supabase</strong> &mdash; stores your account and your saved sermons.</li>
-    <li><strong>Stripe</strong> &mdash; processes card payments and subscriptions.</li>
+    <li><strong>Your bank and the Interac network</strong> &mdash; carry the e-Transfer
+      itself. We are the recipient, not the processor.</li>
     <li><strong>Cloudflare</strong> &mdash; serves the website and protects it from abuse.</li>
   </ul>
   <p>
@@ -91,10 +94,12 @@
 
   <h2>Payments</h2>
   <p>
-    Paid plans are billed in <strong>Canadian dollars</strong> through Stripe. Where
-    Interac e-Transfer is offered as an alternative, we record that a claim was made and
-    which plan it grants, so the payment can be matched to your account. Refer to
-    Stripe&rsquo;s own privacy policy for how they handle payment data.
+    Paid plans are priced in <strong>Canadian dollars</strong> and paid by
+    <strong>Interac e-Transfer</strong>. The transfer runs through your bank and the
+    Interac network; we do not process it and we never see your banking credentials or
+    any card number. Matching a payment to an account is done by hand, from the address
+    you send the transfer from, the note you attach to it, and the details you give us
+    afterwards.
   </p>
 
   <h2>How long we keep things</h2>
