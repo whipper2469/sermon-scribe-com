@@ -78,6 +78,28 @@
     text-decoration: none;
   }
   .nav-cta:hover { background: #b07d20; }
+  .nav-links { display: flex; align-items: center; gap: 1.5rem; }
+  .nav-link { color: var(--ink); text-decoration: none; font-size: 0.9rem; font-weight: 500; }
+  .nav-link:hover { color: var(--gold); }
+
+  /* CHURCH ASSISTANT PROMO */
+  .church-promo {
+    max-width: 1000px; margin: 0 auto 5rem; padding: 3rem;
+    background: var(--ink); color: var(--warm-white); border-radius: 8px;
+    display: grid; grid-template-columns: 1.2fr 1fr; gap: 3rem; align-items: center;
+  }
+  .church-promo .section-label { color: var(--gold-light); }
+  .church-promo h2 { font-family: 'Playfair Display', serif; font-size: clamp(1.6rem, 3vw, 2.2rem); line-height: 1.2; margin-bottom: 1rem; }
+  .church-promo p { color: rgba(253,250,244,0.75); line-height: 1.7; margin-bottom: 1.5rem; }
+  .church-offer { border: 1px solid rgba(232,201,122,0.35); border-radius: 6px; padding: 1.75rem; }
+  .church-offer .offer-badge { display: inline-block; font-size: 0.75rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--gold-light); margin-bottom: 0.75rem; }
+  .church-offer .offer-price { font-family: 'Playfair Display', serif; font-size: 2.6rem; line-height: 1; }
+  .church-offer .offer-price s { font-size: 1.1rem; opacity: 0.5; margin-left: 0.5rem; }
+  .church-offer .offer-monthly { margin: 0.5rem 0 1.25rem; color: rgba(253,250,244,0.8); }
+  @media (max-width: 760px) {
+    .church-promo { grid-template-columns: 1fr; padding: 2rem 1.5rem; margin-inline: 1rem; gap: 2rem; }
+    .nav-links { gap: 1rem; }
+  }
 
   /* HERO */
   .hero {
@@ -427,7 +449,10 @@
 <!-- NAV -->
 <nav>
   <div class="nav-logo">Sermon<span>Scribe</span></div>
-  <a href="/login" class="nav-cta">Sign In</a>
+  <div class="nav-links">
+    <a href="/church-assistant" class="nav-link">For Churches</a>
+    <a href="/login" class="nav-cta">Sign In</a>
+  </div>
 </nav>
 
 <!-- HERO -->
@@ -571,6 +596,24 @@
       </ul>
       <a href="/login" class="price-btn">Start Ministry Plan</a>
     </div>
+  </div>
+</section>
+
+<div class="divider">For Churches</div>
+
+<!-- CHURCH ASSISTANT -->
+<section class="church-promo" id="church-assistant">
+  <div>
+    <p class="section-label">New: Church Website Assistant</p>
+    <h2>An AI assistant that answers visitors for your church</h2>
+    <p>Service times, first visits, kids programs, and what you've been preaching on. Answered any time of day, trained on your own sermons and church information. We set it all up for you.</p>
+    <a href="/church-assistant" class="btn-primary">See How It Works</a>
+  </div>
+  <div class="church-offer">
+    <span class="offer-badge">10 founding churches only</span>
+    <div class="offer-price">$399<s>$599</s></div>
+    <p class="offer-monthly">one-time setup, then $29/month. No contract.</p>
+    <a href="/church-assistant#book" class="btn-ghost" style="color:var(--warm-white);border-color:rgba(232,201,122,0.5)">Book a Demo</a>
   </div>
 </section>
 
