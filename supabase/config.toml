@@ -13,3 +13,26 @@ verify_jwt = true
 
 [functions.customer-portal]
 verify_jwt = true
+
+# Connect browser endpoints require a Supabase user JWT; webhook endpoints use
+# their own Stripe signature verification and must receive the raw request body.
+[functions.connect-account]
+verify_jwt = true
+
+[functions.connect-products]
+verify_jwt = true
+
+[functions.connect-billing]
+verify_jwt = true
+
+[functions.connect-storefront]
+verify_jwt = false
+
+[functions.connect-checkout]
+verify_jwt = false
+
+[functions.stripe-connect-thin-webhook]
+verify_jwt = false
+
+[functions.stripe-connect-webhook]
+verify_jwt = false

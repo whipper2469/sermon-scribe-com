@@ -1,17 +1,14 @@
 import "jsr:@supabase/functions-js/edge-runtime.d.ts";
-import Stripe from "npm:stripe@22.5.0";
+import Stripe from "npm:stripe@23.1.0";
 import { createClient, SupabaseClient } from "jsr:@supabase/supabase-js@2";
 import { planForPriceId } from "../_shared/plans.ts";
-
-const stripe = new Stripe(Deno.env.get("STRIPE_SECRET_KEY") ?? "", {
-  httpClient: Stripe.createFetchHttpClient(),
-});
+import { requiredEnv } from "../_shared/http.ts";
+import { stripeClient } from "../_shared/stripe.ts";
 
 // Deno verifies signatures through Web Crypto, which is async — this pairs with
 // constructEventAsync below. The synchronous constructEvent throws here.
 const cryptoProvider = Stripe.createSubtleCryptoProvider();
 
-const WEBHOOK_SECRET = Deno.env.get("STRIPE_WEBHOOK_SECRET") ?? "";
 
 // Statuses where the customer keeps what they paid for. Anything else falls
 // back to free until Stripe tells us otherwise.
@@ -26,16 +23,18 @@ Deno.serve(async (req) => {
   const body = await req.text();
 
   let event: Stripe.Event;
+  let stripe: Stripe;
   try {
+    stripe = stripeClient();
     event = await stripe.webhooks.constructEventAsync(
       body,
       signature,
-      WEBHOOK_SECRET,
+      requiredEnv("STRIPE_WEBHOOK_SECRET", "Set the signing secret for the existing Sermon Scribe billing webhook."),
       undefined,
       cryptoProvider,
     );
   } catch (err) {
-    console.error("Signature verification failed:", (err as Error).message);
+    console.error("Stripe webhook verification/configuration failed:", (err as Error).message);
     return new Response("Invalid signature", { status: 400 });
   }
 

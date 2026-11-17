@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Seller setup — Sermon Scribe</title>
+  <meta name="robots" content="noindex">
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <style>
+    :root{--gold:#c9912a;--cream:#fdfaf4;--dark:#1a1208;--gray:#7a6e5f;--border:rgba(201,145,42,.24)}
+    *{box-sizing:border-box}body{margin:0;background:var(--cream);color:var(--dark);font:16px 'DM Sans',sans-serif;line-height:1.6}
+    main{max-width:760px;margin:48px auto;padding:0 20px}h1,h2{font-family:'Playfair Display',serif}h1{font-size:clamp(2rem,6vw,3rem);margin:0}h2{font-size:1.35rem;margin:0 0 8px}
+    .muted{color:var(--gray)}.card{background:white;border:1px solid var(--border);border-radius:14px;padding:24px;margin:18px 0}.row{display:flex;gap:12px;flex-wrap:wrap;align-items:center}
+    label{display:block;font-size:14px;font-weight:600;margin:12px 0}input,select{display:block;width:100%;padding:11px 12px;margin-top:5px;border:1px solid #d9d2c8;border-radius:8px;font:inherit}
+    button,.button{display:inline-block;padding:11px 16px;background:var(--gold);border:0;border-radius:8px;color:white;font:600 14px 'DM Sans',sans-serif;text-decoration:none;cursor:pointer}
+    button:disabled{opacity:.55;cursor:wait}.status{padding:12px 14px;background:#f5f0e8;border-radius:8px;margin:12px 0}.hidden{display:none}#message{min-height:24px;color:#a34325}
+  </style>
+</head>
+<body><main>
+  <p class="muted"><a href="/dashboard.html">← Dashboard</a></p>
+  <h1>Seller setup</h1><p class="muted">Connect payouts, create products, and share a secure storefront.</p>
+  <p id="message" role="status"></p>
+  <section id="start" class="card hidden">
+    <h2>Connect your Stripe account</h2>
+    <p class="muted">Stripe securely collects the business details needed to enable card payments.</p>
+    <label>Store name<input id="displayName" maxlength="100" required></label>
+    <label>Country<select id="country"><option value="CA">Canada</option><option value="US">United States</option><option value="GB">United Kingdom</option></select></label>
+    <button id="connectButton" onclick="connectAccount()">Connect with Stripe</button>
+  </section>
+  <section id="seller" class="hidden">
+    <div class="card"><h2>Stripe account status</h2><div id="status" class="status">Loading status…</div>
+      <div class="row"><button onclick="connectAccount()">Continue Stripe onboarding</button><button onclick="openPlatformBilling()">Subscribe to the seller plan</button><button onclick="openBillingPortal()">Manage billing</button><a class="button" id="storeLink" target="_blank" rel="noopener">View storefront</a></div>
+    </div>
+    <div class="card"><h2>Create a product</h2><p class="muted">Enter the amount in minor units (for CAD, 1999 means $19.99).</p>
+      <label>Product name<input id="productName" maxlength="120" required></label>
+      <label>Description<input id="productDescription" maxlength="500"></label>
+      <div class="row"><label style="flex:1;min-width:150px">Amount in minor units<input id="unitAmount" type="number" min="50" step="1" value="1999"></label><label style="flex:1;min-width:120px">Currency<input id="currency" value="cad" maxlength="3"></label></div>
+      <button onclick="createProduct()">Create product</button>
+    </div>
+  </section>
+</main>
+<script>
+  // This public project key is safe for browser use; all Stripe secrets remain
+  // exclusively in Supabase Edge Function secrets.
+  const SUPABASE_URL='https://pythmzvpbtlkhootkqlt.supabase.co';
+  const SUPABASE_KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InB5dGhtenZwYnRsa2hvb3RrcWx0Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODY5OTkzODAsImV4cCI6MjEwMjU3NTM4MH0.Cz9j-ECVhSMAVW4DSP43qMDAl9GERzHwrqnSOcTItOY';
+  const sb=supabase.createClient(SUPABASE_URL,SUPABASE_KEY);let token='';
+  async function call(name,body){const r=await fetch(`${SUPABASE_URL}/functions/v1/${name}`,{method:body===undefined?'GET':'POST',headers:{Authorization:`Bearer ${token}`,'Content-Type':'application/json',apikey:SUPABASE_KEY},...(body===undefined?{}:{body:JSON.stringify(body)})});const d=await r.json();if(!r.ok)throw Error(d.error||`Request failed (${r.status})`);return d}
+  function message(text){document.getElementById('message').textContent=text||''}
+  async function connectAccount(){try{message('Opening secure Stripe onboarding…');const d=await call('connect-account',{displayName:document.getElementById('displayName').value,country:document.getElementById('country').value});location.href=d.url}catch(e){message(e.message)}}
+  async function createProduct(){try{message('Creating product…');const d=await call('connect-products',{name:document.getElementById('productName').value,description:document.getElementById('productDescription').value,unitAmount:Number(document.getElementById('unitAmount').value),currency:document.getElementById('currency').value});message(`Product created (${d.productId}). Share your storefront to sell it.`)}catch(e){message(e.message)}}
+  async function openPlatformBilling(){try{message('Opening Stripe Checkout…');const d=await call('connect-billing',{});location.href=d.url}catch(e){message(e.message)}}
+  async function openBillingPortal(){try{message('Opening billing portal…');const d=await call('connect-billing',{action:'portal'});location.href=d.url}catch(e){message(e.message)}}
+  async function refreshStatus(){try{const s=await call('connect-account');if(!s.connected){document.getElementById('start').classList.remove('hidden');return}document.getElementById('seller').classList.remove('hidden');document.getElementById('storeLink').href=s.storefrontUrl;document.getElementById('status').textContent=`Card payments: ${s.merchantCapability}. Onboarding: ${s.onboardingComplete?'complete':s.requirementsStatus}.`; }catch(e){message(e.message)}}
+  (async()=>{const {data}=await sb.auth.getSession();if(!data.session){location.href='/login.html';return}token=data.session.access_token;await refreshStatus()})();
+</script></body></html>
